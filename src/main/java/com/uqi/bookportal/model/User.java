@@ -46,6 +46,49 @@ public class User extends EntityBase {
 		this.roles = roles;
 	}
 
+	public Set<Book> getFavoriteList() {
+		return favoriteList;
+	}
+
+	public void setFavoriteList(Set<Book> favoriteList) {
+		this.favoriteList = favoriteList;
+	}
+
+	public Set<Book> getReadList() {
+		return readList;
+	}
+
+	public void setReadList(Set<Book> readList) {
+		this.readList = readList;
+	}
+
+	public void addToFavoriteList(Book book) {
+		this.favoriteList.add(book);
+		book.getUsersThatAddedThisFavoriteList().add(this);
+	}
+
+	public void removeFromFavoriteList(Book book) {
+		Book bookToRemove = this.getFavoriteList().stream().filter(b -> b.getId() == book.getId()).findFirst()
+				.orElse(null);
+		if (bookToRemove != null) {
+			this.getFavoriteList().remove(bookToRemove);
+			bookToRemove.getUsersThatAddedThisFavoriteList().remove(this);
+		}
+	}
+
+	public void addToReadingList(Book book) {
+		this.readList.add(book);
+		book.getUsersThatAddedThisReadingList().add(this);
+	}
+
+	public void removeFromReadingList(Book book) {
+		Book bookToRemove = this.getReadList().stream().filter(b -> b.getId() == book.getId()).findFirst().orElse(null);
+		if (bookToRemove != null) {
+			this.getReadList().remove(bookToRemove);
+			bookToRemove.getUsersThatAddedThisReadingList().remove(this);
+		}
+	}
+
 	public String getName() {
 		return name;
 	}

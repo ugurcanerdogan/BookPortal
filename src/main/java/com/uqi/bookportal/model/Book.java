@@ -37,6 +37,30 @@ public class Book extends EntityBase {
 	@JsonBackReference
 	private Set<Author> authors;
 
+	public Set<User> getUsersThatAddedThisFavoriteList() {
+		return usersThatAddedThisFavoriteList;
+	}
+
+	public void setUsersThatAddedThisFavoriteList(Set<User> usersThatAddedThisFavoriteList) {
+		this.usersThatAddedThisFavoriteList = usersThatAddedThisFavoriteList;
+	}
+
+	public Set<User> getUsersThatAddedThisReadingList() {
+		return usersThatAddedThisReadingList;
+	}
+
+	public void setUsersThatAddedThisReadingList(Set<User> usersThatAddedThisReadingList) {
+		this.usersThatAddedThisReadingList = usersThatAddedThisReadingList;
+	}
+
+	public Set<Author> getAuthors() {
+		return authors;
+	}
+
+	public void setAuthors(Set<Author> authors) {
+		this.authors = authors;
+	}
+
 	public String getTitle() {
 		return title;
 	}

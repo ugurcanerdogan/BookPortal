@@ -15,6 +15,7 @@ import com.uqi.bookportal.model.User;
 import com.uqi.bookportal.model.UserDetailsAdapter;
 import com.uqi.bookportal.model.dto.UserDTO;
 import com.uqi.bookportal.model.dto.UserUpdateDTO;
+import com.uqi.bookportal.repo.BookRepository;
 import com.uqi.bookportal.repo.RoleRepository;
 import com.uqi.bookportal.repo.UserRepository;
 
@@ -23,14 +24,50 @@ public class UserService implements UserDetailsService {
 
 	private final UserRepository userRepository;
 
+	private final BookRepository bookRepository;
+
 	private final RoleRepository roleRepository;
 
 	private final PasswordEncoder passwordEncoder;
 
-	public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+	public UserService(UserRepository userRepository, RoleRepository roleRepository, BookRepository bookRepository,
+			PasswordEncoder passwordEncoder) {
 		this.userRepository = userRepository;
 		this.roleRepository = roleRepository;
+		this.bookRepository = bookRepository;
 		this.passwordEncoder = passwordEncoder;
+	}
+
+	public User addBookToReadingList(long userId, long bookId) {
+
+		var user = this.findById(userId);
+		var bookOpt = bookRepository.findById(bookId);
+		bookOpt.ifPresent(user::addToReadingList);
+		return userRepository.save(user);
+	}
+
+	public User addBookToFavoriteList(long userId, long bookId) {
+
+		var user = this.findById(userId);
+		var bookOpt = bookRepository.findById(bookId);
+		bookOpt.ifPresent(user::addToFavoriteList);
+		return userRepository.save(user);
+	}
+
+	public User removeBookFromReadingList(long userId, long bookId) {
+
+		var user = this.findById(userId);
+		var bookOpt = bookRepository.findById(bookId);
+		bookOpt.ifPresent(user::removeFromReadingList);
+		return userRepository.save(user);
+	}
+
+	public User removeBookFromFavoriteList(long userId, long bookId) {
+
+		var user = this.findById(userId);
+		var bookOpt = bookRepository.findById(bookId);
+		bookOpt.ifPresent(user::removeFromFavoriteList);
+		return userRepository.save(user);
 	}
 
 	public User save(UserDTO userDTO) {

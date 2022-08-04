@@ -37,14 +37,35 @@ public class BookService {
 	public Book findByTitle(String title) {
 		var bookOpt = bookRepository.findByTitle(title);
 		return bookOpt.orElseThrow(() -> {
-			throw new IllegalArgumentException("Book not found");
+			throw new IllegalArgumentException("Book not found with this title");
+		});
+	}
+
+	public Book findByYear(int year) {
+		var bookOpt = bookRepository.findByYear(year);
+		return bookOpt.orElseThrow(() -> {
+			throw new IllegalArgumentException("Book not found with this year");
+		});
+	}
+
+	public Book findByPublisher(String publisher) {
+		var bookOpt = bookRepository.findByPublisher(publisher);
+		return bookOpt.orElseThrow(() -> {
+			throw new IllegalArgumentException("Book not found with this publisher");
+		});
+	}
+
+	public Book findByISBN(long isbn) {
+		var bookOpt = bookRepository.findByIsbn(isbn);
+		return bookOpt.orElseThrow(() -> {
+			throw new IllegalArgumentException("Book not found with this ISBN");
 		});
 	}
 
 	public Book findById(long id) {
 		var bookOpt = bookRepository.findById(id);
 		return bookOpt.orElseThrow(() -> {
-			throw new IllegalArgumentException("Book not found");
+			throw new IllegalArgumentException("Book not found with this id");
 		});
 	}
 
