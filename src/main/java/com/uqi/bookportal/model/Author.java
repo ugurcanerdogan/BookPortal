@@ -1,49 +1,52 @@
 package com.uqi.bookportal.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import java.util.Set;
 
 import javax.persistence.*;
-import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "Authors")
-public class Author extends EntityBase{
+public class Author extends EntityBase {
 
-    @Column(name = "NAME", length = 255, unique = true)
-    private String name;
-    @Column(name = "EMAIL", length = 255, unique = true)
-    private String email;
-    @Column(name = "GENDER")
-    private char gender;
+	@Column(name = "NAME", length = 255, unique = true)
+	private String name;
 
-    public String getName() {
-        return name;
-    }
+	@Column(name = "EMAIL", length = 255, unique = true)
+	private String email;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	@Column(name = "GENDER")
+	private char gender;
 
-    public String getEmail() {
-        return email;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public char getGender() {
-        return gender;
-    }
+	public String getEmail() {
+		return email;
+	}
 
-    public void setGender(char gender) {
-        this.gender = gender;
-    }
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
-    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    @JoinTable(name = "AUTHORS_BOOKS", joinColumns = { @JoinColumn(name = "AUTHOR_ID", referencedColumnName = "ID") },
-            inverseJoinColumns = { @JoinColumn(name = "BOOK_ID", referencedColumnName = "ID") })
-    @JsonManagedReference
-    private Set<Book> books;
+	public char getGender() {
+		return gender;
+	}
+
+	public void setGender(char gender) {
+		this.gender = gender;
+	}
+
+	@ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	@JoinTable(name = "AUTHORS_BOOKS", joinColumns = { @JoinColumn(name = "AUTHOR_ID", referencedColumnName = "ID") },
+			inverseJoinColumns = { @JoinColumn(name = "BOOK_ID", referencedColumnName = "ID") })
+	@JsonManagedReference
+	private Set<Book> books;
 
 }
