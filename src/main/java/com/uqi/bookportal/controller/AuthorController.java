@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.uqi.bookportal.model.Author;
@@ -15,6 +16,7 @@ import com.uqi.bookportal.service.AuthorService;
 
 @RestController
 @RequestMapping("/api/v1/authors")
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class AuthorController {
 
 	private final AuthorService authorService;
@@ -30,9 +32,6 @@ public class AuthorController {
 	}
 
 	@GetMapping("")
-	// @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
-	// @Secured("ROLE_ADMIN")// - SECURED
-	// @RolesAllowed()// - JSR
 	public ResponseEntity<List<Author>> getAuthors() {
 		return ResponseEntity.ok(authorService.findAll());
 	}
