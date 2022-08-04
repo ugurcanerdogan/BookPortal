@@ -11,7 +11,7 @@ import org.springframework.util.CollectionUtils;
 
 public class UserDetailsAdapter implements UserDetails {
 
-	private User user;
+	private final User user;
 
 	public UserDetailsAdapter(User user) {
 		this.user = user;
