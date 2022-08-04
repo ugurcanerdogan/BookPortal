@@ -25,6 +25,18 @@ public class Book extends EntityBase {
 	@Column(name = "ISBN", unique = true)
 	private long isbn;
 
+	@ManyToMany(mappedBy = "favoriteList")
+	@JsonBackReference
+	private Set<User> usersThatAddedThisFavoriteList;
+
+	@ManyToMany(mappedBy = "readList")
+	@JsonBackReference
+	private Set<User> usersThatAddedThisReadingList;
+
+	@ManyToMany(mappedBy = "books")
+	@JsonBackReference
+	private Set<Author> authors;
+
 	public String getTitle() {
 		return title;
 	}
@@ -56,17 +68,5 @@ public class Book extends EntityBase {
 	public void setIsbn(long isbn) {
 		this.isbn = isbn;
 	}
-
-	@ManyToMany(mappedBy = "favoriteList")
-	@JsonBackReference
-	private Set<User> usersThatAddedThisFavoriteList;
-
-	@ManyToMany(mappedBy = "readList")
-	@JsonBackReference
-	private Set<User> usersThatAddedThisReadingList;
-
-	@ManyToMany(mappedBy = "books")
-	@JsonBackReference
-	private Set<Author> authors;
 
 }

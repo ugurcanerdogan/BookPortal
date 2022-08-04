@@ -19,6 +19,12 @@ public class Author extends EntityBase {
 	@Column(name = "GENDER")
 	private char gender;
 
+	@ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	@JoinTable(name = "AUTHORS_BOOKS", joinColumns = { @JoinColumn(name = "AUTHOR_ID", referencedColumnName = "ID") },
+			inverseJoinColumns = { @JoinColumn(name = "BOOK_ID", referencedColumnName = "ID") })
+	@JsonManagedReference
+	private Set<Book> books;
+
 	public String getName() {
 		return name;
 	}
@@ -42,11 +48,5 @@ public class Author extends EntityBase {
 	public void setGender(char gender) {
 		this.gender = gender;
 	}
-
-	@ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-	@JoinTable(name = "AUTHORS_BOOKS", joinColumns = { @JoinColumn(name = "AUTHOR_ID", referencedColumnName = "ID") },
-			inverseJoinColumns = { @JoinColumn(name = "BOOK_ID", referencedColumnName = "ID") })
-	@JsonManagedReference
-	private Set<Book> books;
 
 }
