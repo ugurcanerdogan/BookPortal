@@ -10,6 +10,10 @@ public interface AuthorRepository extends JpaRepository<Author, Long> {
 
 	Optional<Author> findByName(String name);
 
+	Optional<Author> findByEmail(String email);
+
 	boolean existsByName(String name);
+
+	boolean existsByEmail(String email);
 
 }
