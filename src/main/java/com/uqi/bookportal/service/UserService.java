@@ -74,6 +74,7 @@ public class UserService implements UserDetailsService {
 
 		var user = new User();
 		user.setUsername(userDTO.getUsername());
+		user.setName(userDTO.getName());
 		user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 		var userRoleOpt = roleRepository.findByName("ROLE_USER");
 		userRoleOpt.ifPresent((userRole) -> {
@@ -122,7 +123,12 @@ public class UserService implements UserDetailsService {
 
 	public User update(long id, UserUpdateDTO userUpdateDTO) {
 		var user = this.findById(id);
-		user.setPassword(passwordEncoder.encode(userUpdateDTO.getPassword()));
+		if (userUpdateDTO.getName() != null) {
+			user.setName(userUpdateDTO.getName());
+		}
+		if (userUpdateDTO.getPassword() != null) {
+			user.setPassword(passwordEncoder.encode(userUpdateDTO.getPassword()));
+		}
 		return userRepository.save(user);
 	}
 

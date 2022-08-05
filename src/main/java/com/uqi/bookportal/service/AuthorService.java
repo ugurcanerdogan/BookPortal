@@ -1,23 +1,29 @@
 package com.uqi.bookportal.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.uqi.bookportal.model.Author;
+import com.uqi.bookportal.model.Book;
 import com.uqi.bookportal.model.dto.AuthorDTO;
 import com.uqi.bookportal.model.dto.AuthorUpdateDTO;
 import com.uqi.bookportal.repo.AuthorRepository;
+import com.uqi.bookportal.repo.BookRepository;
 
 @Service
 public class AuthorService {
 
 	private final AuthorRepository authorRepository;
 
-	public AuthorService(AuthorRepository authorRepository) {
+	private final BookRepository bookRepository;
+
+	public AuthorService(AuthorRepository authorRepository, BookRepository bookRepository) {
 		this.authorRepository = authorRepository;
+		this.bookRepository = bookRepository;
 	}
 
 	public Author save(AuthorDTO authorDTO) {
@@ -27,6 +33,20 @@ public class AuthorService {
 		author.setEmail(authorDTO.getEmail());
 		author.setGender(authorDTO.getGender());
 		return authorRepository.save(author);
+	}
+
+	public Author addBookToAuthor(long authorId, long bookId) {
+
+		Optional<Author> author = authorRepository.findById(authorId);
+		Optional<Book> book = bookRepository.findById(bookId);
+
+		author.ifPresent(author1 -> book.ifPresent(author1::addToBooks));
+		book.ifPresent(bookRepository::save);
+
+		if (author.isPresent()) {
+			return authorRepository.save(author.get());
+		}
+		throw new IllegalArgumentException("Author not found with this id!");
 	}
 
 	public List<Author> findAll() {
@@ -60,7 +80,7 @@ public class AuthorService {
 		if (authorUpdateDTO.getEmail() != null) {
 			author.setEmail(authorUpdateDTO.getEmail());
 		}
-		if (authorUpdateDTO.getGender() != ' ') {
+		if (authorUpdateDTO.getGender() != '\0') {
 			author.setGender(authorUpdateDTO.getGender());
 		}
 		return authorRepository.save(author);
