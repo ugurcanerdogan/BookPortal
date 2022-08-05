@@ -1,5 +1,6 @@
 package com.uqi.bookportal.repo;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,11 +9,13 @@ import com.uqi.bookportal.model.Book;
 
 public interface BookRepository extends JpaRepository<Book, Long> {
 
-	Optional<Book> findByTitle(String title);
+	List<Book> findAllByTitle(String title);
 
-	Optional<Book> findByYear(int year);
+	List<Book> findByTitleContaining(String title);
 
-	Optional<Book> findByPublisher(String publisher);
+	List<Book> findAllByYear(int year);
+
+	List<Book> findAllByPublisher(String publisher);
 
 	Optional<Book> findByIsbn(long isbn);
 

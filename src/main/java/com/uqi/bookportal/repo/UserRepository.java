@@ -15,7 +15,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 	Optional<User> findByName(String name);
 
-	List<User> findByUsernameStartsWithAndActiveTrueOrderByCreateDateDesc(String username);
+	List<User> findByUsernameContaining(String username);
+
+	List<User> findByNameContaining(String name);
 
 	List<User> findByRoles_NameIn(List<String> roles);
 
