@@ -106,7 +106,11 @@ public class UserService implements UserDetailsService {
 	}
 
 	public List<User> findAllByUsername(String username) {
-		return userRepository.findByUsernameStartsWithAndActiveTrueOrderByCreateDateDesc(username);
+		return userRepository.findByUsernameContaining(username);
+	}
+
+	public List<User> findAllByName(String name) {
+		return userRepository.findByNameContaining(name);
 	}
 
 	public User findById(long id) {

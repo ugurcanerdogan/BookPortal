@@ -1,23 +1,29 @@
 package com.uqi.bookportal.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.uqi.bookportal.model.Role;
+import com.uqi.bookportal.model.User;
 import com.uqi.bookportal.model.dto.RoleDTO;
 import com.uqi.bookportal.model.dto.RoleUpdateDTO;
 import com.uqi.bookportal.repo.RoleRepository;
+import com.uqi.bookportal.repo.UserRepository;
 
 @Service
 public class RoleService {
 
 	private final RoleRepository roleRepository;
 
-	public RoleService(RoleRepository roleRepository) {
+	private final UserRepository userRepository;
+
+	public RoleService(RoleRepository roleRepository, UserRepository userRepository) {
 		this.roleRepository = roleRepository;
+		this.userRepository = userRepository;
 	}
 
 	public Role save(RoleDTO roleDTO) {
@@ -25,6 +31,35 @@ public class RoleService {
 		var role = new Role();
 		role.setName(roleDTO.getName());
 		return roleRepository.save(role);
+	}
+
+	public User addRoleToUser(long roleId, long userId) {
+		Optional<User> user = userRepository.findById(userId);
+		Optional<Role> role = roleRepository.findById(roleId);
+
+		if (user.isPresent()) {
+			if (role.isPresent()) {
+				user.get().addRole(role.get());
+				roleRepository.save(role.get());
+				return userRepository.save(user.get());
+			}
+		}
+		throw new IllegalArgumentException("User or Role not found to add!");
+	}
+
+	public User removeRoleFromUser(long roleId, long userId) {
+		Optional<User> user = userRepository.findById(userId);
+		Optional<Role> role = roleRepository.findById(roleId);
+
+		if (user.isPresent()) {
+			if (role.isPresent()) {
+				user.get().removeRole(role.get());
+				roleRepository.save(role.get());
+				return userRepository.save(user.get());
+			}
+		}
+		throw new IllegalArgumentException("User or Role not found to remove!");
+
 	}
 
 	public List<Role> findAll() {
