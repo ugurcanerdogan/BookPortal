@@ -25,6 +25,27 @@ public class Author extends EntityBase {
 	@JsonManagedReference
 	private Set<Book> books;
 
+	public void addToBooks(Book book) {
+		this.books.add(book);
+		book.getAuthors().add(this);
+	}
+
+	public void removeFromBooks(Book book) {
+		Book bookToRemove = this.getBooks().stream().filter(b -> b.getId() == book.getId()).findFirst().orElse(null);
+		if (bookToRemove != null) {
+			this.getBooks().remove(bookToRemove);
+			bookToRemove.getAuthors().remove(this);
+		}
+	}
+
+	public Set<Book> getBooks() {
+		return books;
+	}
+
+	public void setBooks(Set<Book> books) {
+		this.books = books;
+	}
+
 	public String getName() {
 		return name;
 	}
