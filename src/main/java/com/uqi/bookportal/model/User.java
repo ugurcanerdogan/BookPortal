@@ -89,6 +89,19 @@ public class User extends EntityBase {
 		}
 	}
 
+	public void addRole(Role role) {
+		this.roles.add(role);
+		role.getUsers().add(this);
+	}
+
+	public void removeRole(Role role) {
+		Role roleToRemove = this.getRoles().stream().filter(r -> r.getId() == role.getId()).findFirst().orElse(null);
+		if (roleToRemove != null) {
+			this.getRoles().remove(roleToRemove);
+			roleToRemove.getUsers().remove(this);
+		}
+	}
+
 	public String getName() {
 		return name;
 	}
