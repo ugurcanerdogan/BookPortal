@@ -31,6 +31,13 @@ public class AuthorController {
 
 	}
 
+	@PostMapping("/add-book-to-author")
+	public ResponseEntity<Author> addBookToAuthor(@RequestParam(name = "authorId") long authorId,
+			@RequestParam(name = "bookId") long bookId) {
+		return ResponseEntity.ok(authorService.addBookToAuthor(authorId, bookId));
+
+	}
+
 	@GetMapping("")
 	public ResponseEntity<List<Author>> getAuthors() {
 		return ResponseEntity.ok(authorService.findAll());
@@ -60,7 +67,7 @@ public class AuthorController {
 	}
 
 	@DeleteMapping("/{authorId}")
-	public ResponseEntity<Author> removeRole(@PathVariable(name = "authorId") long id) {
+	public ResponseEntity<Author> removeAuthor(@PathVariable(name = "authorId") long id) {
 		return ResponseEntity.ok(authorService.remove(id));
 	}
 

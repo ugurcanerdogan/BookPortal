@@ -1,5 +1,6 @@
 package com.uqi.bookportal.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -10,7 +11,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.uqi.bookportal.model.Book;
-import com.uqi.bookportal.model.dto.BookDTO;
 import com.uqi.bookportal.model.dto.BookUpdateDTO;
 import com.uqi.bookportal.service.BookService;
 
@@ -26,8 +26,9 @@ public class BookController {
 
 	@PostMapping("")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public ResponseEntity<Book> createBook(@Valid @RequestBody BookDTO bookDTO) {
-		return ResponseEntity.ok(bookService.save(bookDTO));
+	public ResponseEntity<Book> createBook(@Valid @RequestBody String input) throws IOException {
+
+		return ResponseEntity.ok(bookService.save(input));
 
 	}
 
