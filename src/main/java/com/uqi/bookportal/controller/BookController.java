@@ -38,10 +38,35 @@ public class BookController {
 		return ResponseEntity.ok(bookService.findAll());
 	}
 
-	@GetMapping("/by-book-title")
+	@GetMapping("/all-by-book-title")
 	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
-	public ResponseEntity<Book> searchBookByTitle(@RequestParam(name = "bookTitle") String bookTitle) {
-		return ResponseEntity.ok(bookService.findByTitle(bookTitle));
+	public ResponseEntity<List<Book>> searchBooksByTitle(@RequestParam(name = "bookTitle") String bookTitle) {
+		return ResponseEntity.ok(bookService.findAllByTitle(bookTitle));
+	}
+
+	@GetMapping("/all-by-year")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
+	public ResponseEntity<List<Book>> searchBooksByYear(@RequestParam(name = "year") int year) {
+		return ResponseEntity.ok(bookService.findAllByYear(year));
+	}
+
+	@GetMapping("/all-by-publisher")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
+	public ResponseEntity<List<Book>> searchBooksByPublisher(@RequestParam(name = "publisher") String publisher) {
+		return ResponseEntity.ok(bookService.findAllByPublisher(publisher));
+	}
+
+	@GetMapping("/by-isbn")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
+	public ResponseEntity<Book> searchBookByIsbn(@RequestParam(name = "isbn") long isbn) {
+		return ResponseEntity.ok(bookService.findByISBN(isbn));
+	}
+
+	@GetMapping("/all-by-contains-title")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
+	public ResponseEntity<List<Book>> searchBooksByContainingBookTitle(
+			@RequestParam(name = "bookTitle") String bookTitle) {
+		return ResponseEntity.ok(bookService.findByTitleContaining(bookTitle));
 	}
 
 	@GetMapping("/with-jpa-pagination")

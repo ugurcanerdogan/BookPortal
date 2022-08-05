@@ -6,15 +6,18 @@ import javax.validation.Valid;
 
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.uqi.bookportal.model.Role;
+import com.uqi.bookportal.model.User;
 import com.uqi.bookportal.model.dto.RoleDTO;
 import com.uqi.bookportal.model.dto.RoleUpdateDTO;
 import com.uqi.bookportal.service.RoleService;
 
 @RestController
 @RequestMapping("/api/v1/roles")
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class RoleController {
 
 	private final RoleService roleService;
@@ -29,10 +32,21 @@ public class RoleController {
 
 	}
 
+	@PostMapping("/add-role-to-user")
+	public ResponseEntity<User> addRoleToUser(@RequestParam(name = "roleId") long roleId,
+			@RequestParam(name = "userId") long userId) {
+		return ResponseEntity.ok(roleService.addRoleToUser(roleId, userId));
+
+	}
+
+	@PostMapping("/remove-role-from-user")
+	public ResponseEntity<User> removeRoleFromUser(@RequestParam(name = "roleId") long roleId,
+			@RequestParam(name = "userId") long userId) {
+		return ResponseEntity.ok(roleService.removeRoleFromUser(roleId, userId));
+
+	}
+
 	@GetMapping("")
-	// @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
-	// @Secured("ROLE_ADMIN")// - SECURED
-	// @RolesAllowed()// - JSR
 	public ResponseEntity<List<Role>> getRoles() {
 		return ResponseEntity.ok(roleService.findAll());
 	}

@@ -63,8 +63,26 @@ public class UserController {
 
 	@GetMapping("/by-username")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public ResponseEntity<User> searchUsers(@RequestParam(name = "username") String username) {
+	public ResponseEntity<User> searchUserByUsername(@RequestParam(name = "username") String username) {
 		return ResponseEntity.ok(userService.findByUsername(username));
+	}
+
+	@GetMapping("/by-name")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	public ResponseEntity<User> searchUserByName(@RequestParam(name = "name") String name) {
+		return ResponseEntity.ok(userService.findByName(name));
+	}
+
+	@GetMapping("/all-by-username")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	public ResponseEntity<List<User>> searchUsersByUsername(@RequestParam(name = "username") String username) {
+		return ResponseEntity.ok(userService.findAllByUsername(username));
+	}
+
+	@GetMapping("/all-by-name")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	public ResponseEntity<List<User>> searchUsersByName(@RequestParam(name = "name") String name) {
+		return ResponseEntity.ok(userService.findAllByName(name));
 	}
 
 	@GetMapping("/with-jpa-pagination")
