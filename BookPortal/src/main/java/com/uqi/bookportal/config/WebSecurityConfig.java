@@ -14,7 +14,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -89,24 +88,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilter(customAuthenticationFilter);
         http.addFilterBefore(new CustomAuthorizationFilter(userRepository), UsernamePasswordAuthenticationFilter.class);
-
-// çalışıyor ama logoutta hala çalışıyor
-//		http.cors().configurationSource(corsConfigurationSource());
-//		CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(
-//				authenticationManagerBean());
-//		customAuthenticationFilter.setFilterProcessesUrl("/api/v1/login");
-//		http.csrf().disable();
-//		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-//		http.authorizeRequests().antMatchers("/api/v1/registration/**", "/api/v1/login/**").permitAll();
-//		http.authorizeRequests().antMatchers(AUTH_WHITELIST).anonymous();
-//		http.authorizeRequests().anyRequest().authenticated();
-//		http.logout().logoutUrl("/logout").logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler());
-//
-//		http.addFilter(customAuthenticationFilter);
-//		http.addFilterBefore(new CustomAuthorizationFilter(userRepository), UsernamePasswordAuthenticationFilter.class);
-
-
-
 
         //http.csrf().disable().authorizeRequests().anyRequest().permitAll();
         // Works for GET, POST, PUT, DELETE

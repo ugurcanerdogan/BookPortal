@@ -25,6 +25,10 @@ public class UserDetailsAdapter implements UserDetails {
 		return Collections.emptyList();
 	}
 
+	public User getUser() {
+		return user;
+	}
+
 	@Override
 	public String getPassword() {
 		return user.getPassword();
