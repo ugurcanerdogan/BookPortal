@@ -1,1 +1,12 @@
-
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  datasource:
+    username: uqi
+    password: Deneme123..
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://uqi123.mysql.database.azure.com:3306/book_portal?useSSL=true
+  jpa:
+    hibernate:
+      ddl-auto: update
