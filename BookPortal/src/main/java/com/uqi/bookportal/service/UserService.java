@@ -5,6 +5,8 @@ import java.util.Set;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -77,9 +79,9 @@ public class UserService implements UserDetailsService {
 		user.setName(userDTO.getName());
 		user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 		var userRoleOpt = roleRepository.findByName("ROLE_USER");
-		userRoleOpt.ifPresent((userRole) -> {
-			user.setRoles(Set.of(userRoleOpt.get()));
-		});
+		userRoleOpt.ifPresent((userRole) ->
+			user.setRoles(Set.of(userRoleOpt.get()))
+		);
 		return userRepository.save(user);
 	}
 
@@ -146,6 +148,28 @@ public class UserService implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		var user = this.findByUsername(username);
 		return new UserDetailsAdapter(user);
+	}
+
+	public boolean userExists(String email) {
+		return userRepository.findByUsername(email).isPresent();
+	}
+
+	public ResponseEntity signUpUser(String name, String username, String password) {
+		if (userExists(username)) {
+			return new ResponseEntity<>("Email already taken!", HttpStatus.NOT_ACCEPTABLE);
+		}
+		String encodedPsw = passwordEncoder.encode(password);
+
+		User user = new User();
+		user.setName(name);
+		user.setUsername(username);
+		user.setPassword(encodedPsw);
+		var userRoleOpt = roleRepository.findByName("ROLE_USER");
+		userRoleOpt.ifPresent((userRole) ->
+			user.setRoles(Set.of(userRoleOpt.get()))
+		);
+		userRepository.save(user);
+		return new ResponseEntity<>(user, HttpStatus.ACCEPTED);
 	}
 
 }
