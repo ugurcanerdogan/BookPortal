@@ -155,11 +155,8 @@ public class UserService implements UserDetailsService {
 	}
 
 	public ResponseEntity signUpUser(String name, String username, String password) {
-		if (userExists(username)) {
-			return new ResponseEntity<>("Email already taken!", HttpStatus.NOT_ACCEPTABLE);
-		}
-		String encodedPsw = passwordEncoder.encode(password);
 
+		String encodedPsw = passwordEncoder.encode(password);
 		User user = new User();
 		user.setName(name);
 		user.setUsername(username);
