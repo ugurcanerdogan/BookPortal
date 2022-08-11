@@ -56,7 +56,7 @@ public class UserController {
 	}
 
 	@GetMapping("")
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+//	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<List<User>> getUsers() {
 		return ResponseEntity.ok(userService.findAll());
 	}
@@ -89,8 +89,9 @@ public class UserController {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<Page<User>> getUsersWithJpaPagination(
 			@RequestParam(name = "pageNumber", defaultValue = "1") int pageNumber,
-			@RequestParam(name = "pageSize", defaultValue = "5") int pageSize) {
-		return ResponseEntity.ok(userService.findAllWithJpaPagination(pageNumber, pageSize));
+			@RequestParam(name = "pageSize", defaultValue = "5") int pageSize,
+			@RequestParam(name = "currentUser", defaultValue = "") String username) {
+		return ResponseEntity.ok(userService.findAllWithJpaPagination(pageNumber, pageSize, username));
 	}
 
 	@GetMapping("/has-role-user")

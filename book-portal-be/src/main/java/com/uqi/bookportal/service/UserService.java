@@ -122,9 +122,9 @@ public class UserService implements UserDetailsService {
 		});
 	}
 
-	public Page<User> findAllWithJpaPagination(int pageNumber, int pageSize) {
+	public Page<User> findAllWithJpaPagination(int pageNumber, int pageSize, String username) {
 		var paged = PageRequest.of(pageNumber, pageSize);
-		return userRepository.findAll(paged);
+		return userRepository.findByUsernameNot(username, paged);
 	}
 
 	public User update(long id, UserUpdateDTO userUpdateDTO) {
