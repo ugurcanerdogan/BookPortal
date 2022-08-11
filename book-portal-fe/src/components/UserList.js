@@ -17,7 +17,7 @@ const UserList = () => {
 
   const [loadFailure, setLoadFailure] = useState(false);
 
-  const pendingApiCall = useApiProgress("/api/v1/users/with-jpa-pagination?pageNumber");
+  const pendingApiCall = useApiProgress("get","/api/v1/users/with-jpa-pagination?pageNumber");
 
 
   useEffect(() => {
@@ -62,6 +62,7 @@ const UserList = () => {
       </div>
     </div>);
   }
+
   return (<div className="card">
     <h3 className="card-header text-center">{t("Users")}</h3>
     <div className="list-group list-group-flush">

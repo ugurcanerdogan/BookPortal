@@ -23,7 +23,16 @@ i18n.use(initReactI18next).init({
         "Next": "next -->",
         "Previous": "<-- previous",
         "Load Failure": "Load failed!",
-        "User not found!": "User not found!"
+        "User not found!": "User not found!",
+        "Edit Profile":"Edit Profile",
+        "Name-Surname: ":"Name-Surname: ",
+        "E-mail: ":"E-mail: ",
+        "Change name and surname": "Change name and surname",
+        "Save":"Save",
+        "Cancel":"Cancel",
+        "My Profile":"My Profile",
+        "Change password":"Change password"
+
       }
     },
     tr: {
@@ -46,7 +55,15 @@ i18n.use(initReactI18next).init({
         "Next": "sonraki -->",
         "Previous": "<-- önceki",
         "Load Failure": "Yükleme başarısız!",
-        "User not found!": "Kullanıcı bulunamadı!"
+        "User not found!": "Kullanıcı bulunamadı!",
+        "Edit Profile":"Profili Düzenle",
+        "Name-Surname: ":"İsim-Soyisim: ",
+        "E-mail: ":"E-mail adresi: ",
+        "Change name and surname": "İsim ve soyisminizi değiştirin",
+        "Save":"Kaydet",
+        "Cancel":"İptal",
+        "My Profile":"Profilim",
+        "Change password":"Şifrenizi değiştirin"
       }
     }
   },

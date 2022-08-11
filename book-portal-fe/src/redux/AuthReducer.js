@@ -1,20 +1,22 @@
 const defaultState = {
-  isLoggedIn: false,
-  username: undefined,
-  password: undefined,
-  name: undefined
+  isLoggedIn: false, id: undefined, username: undefined, password: undefined, name: undefined
 };
 
 const authReducer = (state = { ...defaultState }, action) => {
-  if (action.type === "logout-success")
-    return defaultState;
-  else if (action.type === "login-success") {
+  if (action.type === "logout-success") return defaultState; else if (action.type === "login-success") {
     return {
       ...action.payload,
+      roles: action.payload.role,
+      id: action.payload.userDetails.id,
       name: action.payload.userDetails.name,
       username: action.payload.userDetails.username,
       isLoggedIn: true
     };
+  } else if (action.type === "update-success") {
+    return{
+      ...state,
+      name: action.payload.name
+    }
   }
   return state;
 };

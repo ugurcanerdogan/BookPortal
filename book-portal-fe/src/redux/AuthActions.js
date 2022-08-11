@@ -13,6 +13,15 @@ export const loginSuccess = authState => {
   };
 };
 
+export const updateSuccess = (payload) => {
+  return {
+    type: "update-success",
+    payload : {
+      name:payload.name
+    }
+  };
+};
+
 export const loginHandler = (auth) => {
   return async function(dispatch) {
     const response = await login(auth);

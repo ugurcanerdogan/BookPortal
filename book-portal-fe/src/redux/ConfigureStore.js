@@ -11,6 +11,8 @@ const getStateFromStorage = () => {
   const bpAuth = secureLs.get("book-portal-auth");
   let stateInLocalStorage = {
     isLoggedIn: false,
+    roles: undefined,
+    id: undefined,
     username: undefined,
     password: undefined,
     name: undefined

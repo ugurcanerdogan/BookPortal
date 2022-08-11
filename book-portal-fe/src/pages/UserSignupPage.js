@@ -52,8 +52,8 @@ const UserSignupPage = (props) => {
 
   const { username: usernameError, name: nameError, password: passwordError } = errors;
 
-  const pendingApiCallSignup = useApiProgress("/api/v1/registration");
-  const pendingApiCallLogin = useApiProgress("/api/v1/login");
+  const pendingApiCallSignup = useApiProgress("post","/api/v1/registration");
+  const pendingApiCallLogin = useApiProgress("post","/api/v1/login");
   const pendingApiCall = pendingApiCallSignup || pendingApiCallLogin;
 
 

@@ -39,6 +39,10 @@ export const getUsersWithPagination = (username, pageNumber = 0, pageSize = 4) =
   return axios.get(`/api/v1/users/with-jpa-pagination?pageNumber=${pageNumber}&pageSize=${pageSize}&currentUser=${username}`);
 };
 
+export const updateUser = (userId, body) => {
+  return axios.put(`/api/v1/users/${userId}`, body);
+};
+
 export const getBooks = (token) => {
   return axios.get("/api/v1/books");
 };
