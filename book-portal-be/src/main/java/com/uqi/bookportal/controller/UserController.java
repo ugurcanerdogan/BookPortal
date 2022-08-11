@@ -114,7 +114,7 @@ public class UserController {
 
 	@PutMapping("/{userId}")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public ResponseEntity<User> updateUser(@PathVariable(name = "userId") long id,
+	public ResponseEntity<User> updateUser(@Valid @PathVariable(name = "userId") long id,
 			@Valid @RequestBody UserUpdateDTO userUpdateDTO) {
 		return ResponseEntity.ok(userService.update(id, userUpdateDTO));
 	}

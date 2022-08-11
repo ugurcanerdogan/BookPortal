@@ -19,23 +19,24 @@ public class GlobalExceptionHandler {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-	@ExceptionHandler(Throwable.class)
-	public ResponseEntity<?> handleRuntimeException(HttpServletRequest request, Throwable t) {
-		LOGGER.error(t.getMessage(), t);
-		var map = new HashMap<>();
-		map.put("Error message", "Unknown error occured...");
-		return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
+//	@ExceptionHandler(Throwable.class)
+//	public ResponseEntity<?> handleRuntimeException(HttpServletRequest request, Throwable t) {
+//		LOGGER.error(t.getMessage(), t);
+//		var map = new HashMap<>();
+//		map.put("Error message", "Unknown error occured...");
+//		return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
+//
+//	}
 
-	}
-
-	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public ResponseEntity<?> handleValidationException(HttpServletRequest request, Throwable t) {
-		LOGGER.error(t.getMessage(), t);
-		var map = new HashMap<>();
-		map.put("Error", t.getMessage());
-		return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
-
-	}
+//	@ExceptionHandler(MethodArgumentNotValidException.class)
+//	public ResponseEntity<?> handleValidationException(HttpServletRequest request, Throwable t) {
+//		LOGGER.error(t.getMessage(), t);
+//		var map = new HashMap<>();
+//		map.put("Error", t.getMessage());
+//		map.put("shortMessage", );
+//		return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
+//
+//	}
 
 	@ExceptionHandler(DataIntegrityViolationException.class)
 	public ResponseEntity<?> handleDatabaseException(HttpServletRequest request, Throwable t) {
