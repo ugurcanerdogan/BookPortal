@@ -1,44 +1,42 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-function getDisplayName(WrappedComponent){
-  return WrappedComponent.displayName || WrappedComponent.name || "Component"
-}
+export const useApiProgress = (apiPath) => {
+  const [pendingApiCall, setPendingApiCall] = useState(false);
+  useEffect(() => {
 
-export function withApiProgress(WrappedComponent, apiPath) {
-  return class ApiProgress extends Component {
-    static displayName = "ApiProgress("+getDisplayName(WrappedComponent)+")";
+    let requestInterceptor, responseInterceptor;
 
-    state = {
-      pendingApiCall: false
-    };
-
-    componentDidMount() {
-      axios.interceptors.request.use((request) => {
-
-        this.updateApiCallFor(request.url, true);
-        return request;
-      });
-
-      axios.interceptors.response.use((response) => {
-        this.updateApiCallFor(response.config.url, false);
-
-      }, (error) => {
-        this.updateApiCallFor(error.config.url, false);
-
-        throw error;
-      });
-    }
-
-    updateApiCallFor = (url, inProgress) => {
-      if (url === apiPath) {
-        this.setState({ pendingApiCall: inProgress });
+    const updateApiCallFor = (url, inProgress) => {
+      if (url.startsWith(apiPath)) {
+        setPendingApiCall(inProgress);
       }
     };
 
-    render() {
-      const { pendingApiCall } = this.state;
-      return <WrappedComponent pendingApiCall={pendingApiCall} {...this.props} />;
-    }
-  };
-}
+    const regiserInterceptors = () => {
+      requestInterceptor = axios.interceptors.request.use((request) => {
+        updateApiCallFor(request.url, true);
+        return request;
+      });
+      responseInterceptor = axios.interceptors.response.use((response) => {
+        updateApiCallFor(response.config.url, false);
+        return response;
+      }, (error) => {
+        updateApiCallFor(error.config.url, false);
+        throw error;
+      });
+    };
+
+    const unregisterInterceptors = () => {
+      axios.interceptors.request.eject(requestInterceptor);
+      axios.interceptors.response.eject(responseInterceptor);
+    };
+
+    regiserInterceptors();
+
+    return function unmount() {
+      unregisterInterceptors();
+    };
+  }, []);
+  return pendingApiCall;
+};

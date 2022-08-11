@@ -16,9 +16,14 @@ i18n.use(initReactI18next).init({
         "Name-Surname": "Name-Surname",
         "Password": "Password",
         "Password Repeat": "Password Repeat",
-        "Login":"Login",
-        "Login Failed !":"Login Failed !"
-
+        "Login": "Login",
+        "Login Failed !": "Login Failed !",
+        "Logout": "Logout",
+        "Users": "Users",
+        "Next": "next -->",
+        "Previous": "<-- previous",
+        "Load Failure": "Load failed!",
+        "User not found!": "User not found!"
       }
     },
     tr: {
@@ -34,8 +39,14 @@ i18n.use(initReactI18next).init({
         "Name-Surname": "İsim-Soyisim",
         "Password": "Şifre",
         "Password Repeat": "Şifreyi Tekrarla",
-        "Login":"Giriş Yap",
-        "Login Failed !":"Giriş başarısız !"
+        "Login": "Giriş Yap",
+        "Login Failed !": "Giriş başarısız !",
+        "Logout": "Çıkış Yap",
+        "Users": "Kullanıcılar",
+        "Next": "sonraki -->",
+        "Previous": "<-- önceki",
+        "Load Failure": "Yükleme başarısız!",
+        "User not found!": "Kullanıcı bulunamadı!"
       }
     }
   },
