@@ -130,9 +130,6 @@ public class BookService {
 		if (bookUpdateDTO.getPublisher() != null) {
 			book.setPublisher(bookUpdateDTO.getPublisher());
 		}
-		if (bookUpdateDTO.getIsbn() != 0) {
-			book.setIsbn(bookUpdateDTO.getIsbn());
-		}
 		return bookRepository.save(book);
 	}
 

@@ -38,6 +38,12 @@ public class AuthorController {
 
 	}
 
+	@GetMapping("/with-book-title")
+	@PreAuthorize("hasRole('ROLE_USER')")
+	public ResponseEntity<List<Author>> getAuthorsWithBookTitle(@RequestParam(name = "bookTitle") String bookTitle) {
+		return ResponseEntity.ok(authorService.getAuthorsWithBook(List.of(bookTitle)));
+	}
+
 	@GetMapping("")
 	public ResponseEntity<List<Author>> getAuthors() {
 		return ResponseEntity.ok(authorService.findAll());

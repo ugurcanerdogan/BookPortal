@@ -79,9 +79,7 @@ public class UserService implements UserDetailsService {
 		user.setName(userDTO.getName());
 		user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 		var userRoleOpt = roleRepository.findByName("ROLE_USER");
-		userRoleOpt.ifPresent((userRole) ->
-			user.setRoles(Set.of(userRoleOpt.get()))
-		);
+		userRoleOpt.ifPresent((userRole) -> user.setRoles(Set.of(userRoleOpt.get())));
 		return userRepository.save(user);
 	}
 
@@ -162,9 +160,7 @@ public class UserService implements UserDetailsService {
 		user.setUsername(username);
 		user.setPassword(encodedPsw);
 		var userRoleOpt = roleRepository.findByName("ROLE_USER");
-		userRoleOpt.ifPresent((userRole) ->
-			user.setRoles(Set.of(userRoleOpt.get()))
-		);
+		userRoleOpt.ifPresent((userRole) -> user.setRoles(Set.of(userRoleOpt.get())));
 		userRepository.save(user);
 		return new ResponseEntity<>(user, HttpStatus.ACCEPTED);
 	}

@@ -1,5 +1,7 @@
 package com.uqi.bookportal.model.dto;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 
 public class BookUpdateDTO {
@@ -7,12 +9,12 @@ public class BookUpdateDTO {
 	@Size(max = 255, min = 3, message = "Please enter a valid title")
 	private String title;
 
+	@Min(0)
+	@Max(2023)
 	private int year;
 
 	@Size(max = 255, min = 3, message = "Please enter a valid publisher")
 	private String publisher;
-
-	private long isbn;
 
 	public String getTitle() {
 		return title;
@@ -36,14 +38,6 @@ public class BookUpdateDTO {
 
 	public void setPublisher(String publisher) {
 		this.publisher = publisher;
-	}
-
-	public long getIsbn() {
-		return isbn;
-	}
-
-	public void setIsbn(long isbn) {
-		this.isbn = isbn;
 	}
 
 }

@@ -3,6 +3,7 @@ package com.uqi.bookportal.service;
 import java.util.List;
 import java.util.Optional;
 
+import com.uqi.bookportal.model.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -47,6 +48,10 @@ public class AuthorService {
 			return authorRepository.save(author.get());
 		}
 		throw new IllegalArgumentException("Author not found with this id!");
+	}
+
+	public List<Author> getAuthorsWithBook(List<String> titles) {
+		return authorRepository.findByBooks_TitleIn(titles);
 	}
 
 	public List<Author> findAll() {

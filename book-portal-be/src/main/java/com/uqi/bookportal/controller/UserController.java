@@ -26,25 +26,29 @@ public class UserController {
 
 	@PostMapping("/add-book-to-favorite-list")
 	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
-	public ResponseEntity<User> addBookToFavoriteList(long userId, long bookId) {
+	public ResponseEntity<User> addBookToFavoriteList(@RequestParam(name = "userId") long userId,
+			@RequestParam(name = "bookId") long bookId) {
 		return ResponseEntity.ok(userService.addBookToFavoriteList(userId, bookId));
 	}
 
 	@PostMapping("/add-book-to-read-list")
 	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
-	public ResponseEntity<User> addBookToReadList(long userId, long bookId) {
+	public ResponseEntity<User> addBookToReadList(@RequestParam(name = "userId") long userId,
+			@RequestParam(name = "bookId") long bookId) {
 		return ResponseEntity.ok(userService.addBookToReadingList(userId, bookId));
 	}
 
 	@DeleteMapping("/remove-book-from-favorite-list")
 	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
-	public ResponseEntity<User> removeBookFromFavoriteList(long userId, long bookId) {
+	public ResponseEntity<User> removeBookFromFavoriteList(@RequestParam(name = "userId") long userId,
+			@RequestParam(name = "bookId") long bookId) {
 		return ResponseEntity.ok(userService.removeBookFromFavoriteList(userId, bookId));
 	}
 
 	@DeleteMapping("/remove-book-from-read-list")
 	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
-	public ResponseEntity<User> removeBookFromReadList(long userId, long bookId) {
+	public ResponseEntity<User> removeBookFromReadList(@RequestParam(name = "userId") long userId,
+			@RequestParam(name = "bookId") long bookId) {
 		return ResponseEntity.ok(userService.removeBookFromReadingList(userId, bookId));
 	}
 
@@ -56,7 +60,7 @@ public class UserController {
 	}
 
 	@GetMapping("")
-//	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<List<User>> getUsers() {
 		return ResponseEntity.ok(userService.findAll());
 	}
