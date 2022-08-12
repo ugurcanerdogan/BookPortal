@@ -15,16 +15,16 @@ export const useApiProgress = (apiMethod, apiPath) => {
 
     const regiserInterceptors = () => {
       requestInterceptor = axios.interceptors.request.use((request) => {
-        const { url, method} = request;
+        const { url, method } = request;
         updateApiCallFor(method, url, true);
         return request;
       });
       responseInterceptor = axios.interceptors.response.use((response) => {
-        const { url, method} = response.config;
+        const { url, method } = response.config;
         updateApiCallFor(method, url, false);
         return response;
       }, (error) => {
-        const { url, method} = error.config;
+        const { url, method } = error.config;
         updateApiCallFor(method, url, false);
         throw error;
       });
@@ -40,6 +40,6 @@ export const useApiProgress = (apiMethod, apiPath) => {
     return function unmount() {
       unregisterInterceptors();
     };
-  }, [apiPath,apiMethod]);
+  }, [apiPath, apiMethod]);
   return pendingApiCall;
 };

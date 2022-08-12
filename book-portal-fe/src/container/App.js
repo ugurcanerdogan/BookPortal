@@ -5,26 +5,37 @@ import LanguageSelector from "../components/LanguageSelector";
 import LoginPage from "../pages/LoginPage";
 import HomePage from "../pages/HomePage";
 import UserPage from "../pages/UserPage";
+import BookPage from "../pages/BookPage";
 import TopBar from "../components/TopBar";
 import { useSelector } from "react-redux";
+import UserList from "../components/User/UserList";
+import AuthorList from "../components/Author/AuthorList";
+import AuthorPage from "../pages/AuthorPage";
 
 
 const App = () => {
 
-  const { isLoggedIn } = useSelector(store => ({
-    isLoggedIn: store.isLoggedIn
+  const { isLoggedIn, isAdmin } = useSelector(store => ({
+    isLoggedIn: store.isLoggedIn, isAdmin: store.isAdmin
   }));
+
 
   return (<div>
     <HashRouter>
-      <TopBar />
-      <Switch>
-        <Route exact path="/" component={HomePage} />
-        {!isLoggedIn && <Route path="/login" component={LoginPage} />}
-        <Route path="/signup" component={UserSignupPage} />
-        <Route path="/users/:username" component={UserPage} />
-        <Redirect to="/" />
-      </Switch>
+      <TopBar isAdmin={isAdmin} />
+      <div>
+        <Switch>
+          {!isLoggedIn && <Route path="/login" component={LoginPage} />}
+          <Route exact path="/users/" component={UserList} />
+          <Route exact path="/authors/" component={AuthorList} />
+          <Route exact path="/" component={HomePage} />
+          <Route path="/users/:username" component={UserPage} />
+          <Route path="/books/:isbn" component={BookPage} />
+          <Route path="/authors/:name" component={AuthorPage} />
+          <Route path="/signup" component={UserSignupPage} />
+          <Redirect to="/" />
+        </Switch>
+      </div>
     </HashRouter>
     <LanguageSelector />
   </div>);

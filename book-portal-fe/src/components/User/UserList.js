@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { getUsersWithPagination } from "../api/apiCalls";
+import { getUsersWithPagination } from "../../api/apiCalls";
 import { useTranslation } from "react-i18next";
-import UserListItem from "../components/UserListItem";
+import UserListItem from "../../components/User/UserListItem";
 import { useSelector } from "react-redux";
-import { useApiProgress } from "../shared/ApiProgress";
+import { useApiProgress } from "../../shared/ApiProgress";
 
 const UserList = () => {
 
@@ -17,7 +17,7 @@ const UserList = () => {
 
   const [loadFailure, setLoadFailure] = useState(false);
 
-  const pendingApiCall = useApiProgress("get","/api/v1/users/with-jpa-pagination?pageNumber");
+  const pendingApiCall = useApiProgress("get", "/api/v1/users/with-jpa-pagination?pageNumber");
 
 
   useEffect(() => {
@@ -63,15 +63,19 @@ const UserList = () => {
     </div>);
   }
 
-  return (<div className="card">
-    <h3 className="card-header text-center">{t("Users")}</h3>
-    <div className="list-group list-group-flush">
-      {allUsers.map((user) => (<UserListItem key={user.username} user={user}>
-      </UserListItem>))}
+  return (
+    <div className="container">
+      <div className="card">
+        <h3 className="card-header text-center">{t("Users")}</h3>
+        <div className="list-group list-group-flush">
+          {allUsers.map((user) => (<UserListItem key={user.username} user={user}>
+          </UserListItem>))}
+        </div>
+        {actionDiv}
+        {loadFailure && <div className="text-center text-danger"> {t("Load Failure")} </div>}
+      </div>
     </div>
-    {actionDiv}
-    {loadFailure && <div className="text-center text-danger"> {t("Load Failure")} </div>}
-  </div>);
+  );
 };
 
 export default (UserList);

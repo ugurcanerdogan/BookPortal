@@ -13,33 +13,55 @@ export const loginSuccess = authState => {
   };
 };
 
-export const updateSuccess = (payload) => {
+export const updateUserSuccess = (payload) => {
   return {
-    type: "update-success",
-    payload : {
-      name:payload.name
+    type: "update-user-success",
+    payload: {
+      name: payload.name
     }
   };
 };
 
-export const loginHandler = (auth) => {
-  return async function(dispatch) {
-    const response = await login(auth);
+export const updateAuthorSuccess = (payload) => {
+  return {
+    type: "update-author-success",
+    payload: {
+      name: payload.name,
+      gender: payload.gender,
+      email: payload.email
+    }
+  };
+};
 
+export const updateBookSuccess = (payload) => {
+  return {
+    type: "update-book-success",
+    payload: {
+      title: payload.title,
+      year: payload.year,
+      publisher: payload.publisher
+    }
+  };
+};
+
+export const loginHandler = (credentials) => {
+  return async function(dispatch) {
+    const response = await login(credentials);
     const token = response.data.access_token;
-    const userDetails = response.data.userDetails;
     const isBanned = response.data.is_banned;
+    const name = response.data.name;
 
     const user = jwt(token);
 
     console.log(user);
 
+    user.name = name;
     user.token = token;
-    user.userDetails = userDetails;
     user.is_banned = isBanned;
-
+    console.log(user.token);
     dispatch(loginSuccess(user));
     return response;
+
   };
 };
 

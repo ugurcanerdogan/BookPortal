@@ -1,30 +1,30 @@
 import React, { useEffect, useState } from "react";
-import ProfileCard from "../components/User/ProfileCard";
-import { getUser } from "../api/apiCalls";
+import AuthorCard from "../components/Author/AuthorCard";
+import { getAuthor } from "../api/apiCalls";
 import { useTranslation } from "react-i18next";
 
 
-const UserPage = (props) => {
-  const [user, setUser] = useState({});
+const AuthorPage = (props) => {
+  const [author, setAuthor] = useState({});
   const [notFound, setNotFound] = useState(false);
   const { t } = useTranslation();
 
   useEffect(() => {
     setNotFound(false);
-  }, [user]);
+  }, [author]);
 
   useEffect(() => {
-    const loadUser = async () => {
+    const loadAuthor = async () => {
       try {
-        const response = await getUser(props.match.params.username);
-        setUser(response.data);
+        const response = await getAuthor(props.match.params.name);
+        setAuthor(response.data);
 
       } catch (e) {
         setNotFound(true);
       }
     };
-    loadUser();
-  }, [props.match.params.username]);
+    loadAuthor();
+  }, [props.match.params.name]);
 
   if (notFound) {
     return (
@@ -33,15 +33,15 @@ const UserPage = (props) => {
           <div>
             <i className="material-icons" style={{ fontSize: 48, color: "red" }}>error</i>
           </div>
-          {t("User not found!")}
+          {t("Author not found!")}
         </div>
       </div>
     );
   }
 
   return (<div className="container">
-    <ProfileCard user={user} />
+    <AuthorCard author={author} />
   </div>);
 };
 
-export default UserPage;
+export default AuthorPage;

@@ -11,14 +11,14 @@ const getStateFromStorage = () => {
   const bpAuth = secureLs.get("book-portal-auth");
   let stateInLocalStorage = {
     isLoggedIn: false,
-    roles: undefined,
-    id: undefined,
     username: undefined,
-    password: undefined,
-    name: undefined
+    password: undefined
   };
   if (bpAuth) {
-    stateInLocalStorage = bpAuth;
+    try {
+      stateInLocalStorage = bpAuth;
+    } catch (error) {
+    }
   }
   return stateInLocalStorage;
 };
@@ -30,9 +30,8 @@ const updateStateInStorage = newState => {
 const configureStore = () => {
   const initialState = getStateFromStorage();
   setAuthorizationHeader(initialState);
-  //window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
   const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-  const store = createStore(authReducer, getStateFromStorage(), composeEnhancers(applyMiddleware(thunk)));
+  const store = createStore(authReducer, initialState, composeEnhancers(applyMiddleware(thunk)));
 
   store.subscribe(() => {
     updateStateInStorage(store.getState());

@@ -35,12 +35,40 @@ export const getUser = (username) => {
   return axios.get(`/api/v1/users/by-username?username=${username}`);
 };
 
+export const getAuthor = (authorName) => {
+  return axios.get(`/api/v1/authors/by-author-name?authorName=${authorName}`);
+};
+
+export const getBooksByTitle = (title) => {
+  return axios.get(`/api/v1/books/all-by-contains-title?title=${title}`);
+};
+
+export const getBook = (isbn) => {
+  return axios.get(`/api/v1/books/by-isbn?isbn=${isbn}`);
+};
+
 export const getUsersWithPagination = (username, pageNumber = 0, pageSize = 4) => {
   return axios.get(`/api/v1/users/with-jpa-pagination?pageNumber=${pageNumber}&pageSize=${pageSize}&currentUser=${username}`);
 };
 
+export const getBooksWithPagination = (pageNumber = 0, pageSize = 4) => {
+  return axios.get(`/api/v1/books/with-jpa-pagination?pageNumber=${pageNumber}&pageSize=${pageSize}`);
+};
+
+export const getAuthorsWithPagination = (pageNumber = 0, pageSize = 4) => {
+  return axios.get(`/api/v1/authors/with-jpa-pagination?pageNumber=${pageNumber}&pageSize=${pageSize}`);
+};
+
 export const updateUser = (userId, body) => {
   return axios.put(`/api/v1/users/${userId}`, body);
+};
+
+export const updateBook = (bookId, body) => {
+  return axios.put(`/api/v1/books/${bookId}`, body);
+};
+
+export const updateAuthor = (authorId, body) => {
+  return axios.put(`/api/v1/authors/${authorId}`, body);
 };
 
 export const getBooks = (token) => {

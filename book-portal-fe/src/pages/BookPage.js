@@ -1,30 +1,30 @@
 import React, { useEffect, useState } from "react";
-import ProfileCard from "../components/User/ProfileCard";
-import { getUser } from "../api/apiCalls";
+import BookCard from "../components/Book/BookCard";
+import { getBook } from "../api/apiCalls";
 import { useTranslation } from "react-i18next";
 
 
-const UserPage = (props) => {
-  const [user, setUser] = useState({});
+const BookPage = (props) => {
+  const [book, setBook] = useState({});
   const [notFound, setNotFound] = useState(false);
   const { t } = useTranslation();
 
   useEffect(() => {
     setNotFound(false);
-  }, [user]);
+  }, [book]);
 
   useEffect(() => {
-    const loadUser = async () => {
+    const loadBook = async () => {
       try {
-        const response = await getUser(props.match.params.username);
-        setUser(response.data);
+        const response = await getBook(props.match.params.isbn);
+        setBook(response.data);
 
       } catch (e) {
         setNotFound(true);
       }
     };
-    loadUser();
-  }, [props.match.params.username]);
+    loadBook();
+  }, [props.match.params.isbn]);
 
   if (notFound) {
     return (
@@ -33,15 +33,15 @@ const UserPage = (props) => {
           <div>
             <i className="material-icons" style={{ fontSize: 48, color: "red" }}>error</i>
           </div>
-          {t("User not found!")}
+          {t("Book not found!")}
         </div>
       </div>
     );
   }
 
   return (<div className="container">
-    <ProfileCard user={user} />
+    <BookCard book={book} />
   </div>);
 };
 
-export default UserPage;
+export default BookPage;

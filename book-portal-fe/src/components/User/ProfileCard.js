@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
-import defaultPicture from "../assets/userImage.png";
-import { useApiProgress } from "../shared/ApiProgress";
-import Input from "../components/Input";
-import { updateUser } from "../api/apiCalls";
-import { updateSuccess } from "../redux/AuthActions";
+import defaultPicture from "../../assets/userImage.png";
+import { useApiProgress } from "../../shared/ApiProgress";
+import Input from "../../components/Input";
+import { updateUser } from "../../api/apiCalls";
+import { updateUserSuccess } from "../../redux/AuthActions";
 
 
 const ProfileCard = (props) => {
@@ -17,8 +17,8 @@ const ProfileCard = (props) => {
   const [inEditMode, setInEditMode] = useState(false);
   const [updatedPassword, setUpdatedPassword] = useState();
   const [validationErrors, setValidationErrors] = useState([]);
-  const { username: loggedInUsername } = useSelector((store) => ({
-    username: store.username
+  const { username: loggedInUsername, isAdmin } = useSelector((store) => ({
+    username: store.username, isAdmin: store.isAdmin
   }));
   const { t } = useTranslation();
   const routeParams = useParams();
@@ -28,21 +28,21 @@ const ProfileCard = (props) => {
 
 
   useEffect(() => {
-    setUser(props.user)
-  },[props.user])
+    setUser(props.user);
+  }, [props.user]);
 
   useEffect(() => {
-    setEditable(pathUserName === loggedInUsername)
-  },[pathUserName, loggedInUsername])
+    setEditable(isAdmin || pathUserName === loggedInUsername);
+  }, [isAdmin, pathUserName, loggedInUsername]);
 
   useEffect(() => {
-    setValidationErrors(()=>{
+    setValidationErrors(() => {
       return {
-        name:undefined,
-        updatedPassword:undefined
-      }
-    })
-  },[updatedName, updatedPassword])
+        name: undefined,
+        updatedPassword: undefined
+      };
+    });
+  }, [updatedName, updatedPassword]);
 
   useEffect(() => {
     if (!inEditMode) {
@@ -59,30 +59,27 @@ const ProfileCard = (props) => {
     const body = {
       name: updatedName,
       password: updatedPassword
-    }
-    try{
-      const response = await updateUser(id, body)
-      console.log(response)
-      setInEditMode(false)
+    };
+    try {
+      const response = await updateUser(id, body);
+      console.log(response);
+      setInEditMode(false);
+      if (!isAdmin || loggedInUsername === pathUserName) {
+        dispatch(updateUserSuccess(response.data));
+      }
       setUser(response.data);
-       dispatch(updateSuccess(response.data))
-    }catch (e) {
-      setValidationErrors(e.response.data.errors)
+    } catch (e) {
+      setValidationErrors(e.response.data.errors);
     }
   };
 
-  const pendingApiCall = useApiProgress("get","/api/v1/users/");
-  const updatePendingApiCall = useApiProgress("put","/api/v1/users/"+id);
+  const pendingApiCall = useApiProgress("get", "/api/v1/users/");
+  const updatePendingApiCall = useApiProgress("put", "/api/v1/users/" + id);
 
   const updateOrOtherPendingApiCall = pendingApiCall || updatePendingApiCall;
   let imageSource = defaultPicture;
   if (image) {
     imageSource = image;
-  }
-
-  let message = "We cannot edit";
-  if (pathUserName === loggedInUsername) {
-    message = "We can edit";
   }
 
   let actionDiv;
@@ -111,10 +108,12 @@ const ProfileCard = (props) => {
           <div>
             <Input onChange={(event) => {
               setUpdatedName(event.target.value);
-            }} label={t("Change name and surname")} defaultValue={name} error={validationErrors[0] && validationErrors[0].defaultMessage}/>
+            }} label={t("Change name and surname")} defaultValue={name}
+                   error={validationErrors[0] && validationErrors[0].defaultMessage} />
             <Input onChange={(event) => {
               setUpdatedPassword(event.target.value);
-            }} label={t("Change password")} type="password" defaultValue={undefined} error={validationErrors[1] && validationErrors[1].defaultMessage}/>
+            }} label={t("Change password")} type="password" defaultValue={undefined}
+                   error={validationErrors[1] && validationErrors[1].defaultMessage} />
             <button onClick={onClickSave} className="btn btn-primary d-inline-flex mt-2 me-1">
               <span className="material-icons">save</span>
               {t("Save")}
