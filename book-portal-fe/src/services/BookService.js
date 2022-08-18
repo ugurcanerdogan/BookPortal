@@ -25,4 +25,8 @@ export default class BookService {
   addBook = (body) => {
     return axios.post(`http://localhost:8080/api/v1/books`, body);
   };
+
+  deleteBook = (id) => {
+    return axios.delete(`http://localhost:8080/api/v1/books/${id}`);
+  };
 }

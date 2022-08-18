@@ -3,7 +3,7 @@ import axios from "axios";
 export default class AuthService {
 
   signUp = (body) => {
-    return axios.post("http://localhost:8080/api/v1/registration", body);
+    return axios.post("http://localhost:8080/api/v1/users/registration", body);
   };
 
   login = (creds) => {
