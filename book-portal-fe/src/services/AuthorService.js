@@ -21,4 +21,8 @@ export default class AuthorService {
   addAuthor = (body) => {
     return axios.post(`http://localhost:8080/api/v1/authors`, body);
   };
+
+  deleteAuthor = (id) => {
+    return axios.delete(`http://localhost:8080/api/v1/authors/${id}`);
+  };
 }
