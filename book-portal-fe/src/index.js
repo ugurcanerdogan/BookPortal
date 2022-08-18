@@ -4,9 +4,11 @@ import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import App from "./App";
 import "./index.css";
+import "./i18n";
 import "semantic-ui-css/semantic.min.css";
 import reportWebVitals from "./reportWebVitals";
 import configureStore from "./store/configureStore";
+import "react-toastify/dist/ReactToastify.min.css"
 
 const store = configureStore();
 
