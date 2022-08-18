@@ -7,10 +7,13 @@ import { refreshUserHandler } from "../../store/actions/authActions";
 import UqiTextInput from "../../utilities/customFormControls/UqiTextInput";
 import userImage from "../../assets/userImage.png";
 import UserService from "../../services/UserService";
+import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
 
 
 export const UserUpdate = (props) => {
 
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const initialValues = { name: "", password: "" };
   const [user, setUser] = useState({});
@@ -33,18 +36,24 @@ export const UserUpdate = (props) => {
     }
     const { history } = props;
     const { push } = history;
-    const response = await userService.updateUser(user.id, values);
-    setUser(response);
-    if (pathUserName === loggedInUsername) {
-      dispatch(refreshUserHandler(response.data.name));
+
+    try{
+      const response = await userService.updateUser(user.id, values);
+      setUser(response);
+      toast.success(t("User updated!"), { autoClose: 500 });
+      if (pathUserName === loggedInUsername) {
+        dispatch(refreshUserHandler(response.data.name));
+      }
+      push("/users");
+    }catch (apiError){
+      toast.error(t("Update failed..."), { autoClose: 750 });
     }
-    push("/users");
   };
 
   return (<div>
     <Header as="h2" icon textAlign="center">
       <Icon name="users" circular />
-      <Header.Content>Update User</Header.Content>
+      <Header.Content>{t("Update User")}</Header.Content>
     </Header>
 
     <Card fluid>
@@ -52,7 +61,7 @@ export const UserUpdate = (props) => {
       <Card.Content>
         <Card.Header>{user.name}</Card.Header>
         <Card.Description>
-          Matthew is a musician living in Nashville.
+          {t("Additional info")}
         </Card.Description>
       </Card.Content>
     </Card>
@@ -63,9 +72,9 @@ export const UserUpdate = (props) => {
               resetForm();
             }}>
       <Form className="ui form">
-        <UqiTextInput name="name" placeholder="İsim-Soyisim"></UqiTextInput>
-        <UqiTextInput name="password" placeholder="Şifre" type="password"></UqiTextInput>
-        <Button color="yellow" type="submit">Save</Button>
+        <UqiTextInput name="name" placeholder={t("Name-Surname")}></UqiTextInput>
+        <UqiTextInput name="password" placeholder={t("Password")} type="password"></UqiTextInput>
+        <Button color="yellow" type="submit">{t("Update")}</Button>
       </Form>
     </Formik>
   </div>);

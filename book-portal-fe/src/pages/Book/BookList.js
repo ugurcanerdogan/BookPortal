@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { Button, Card, Icon, Image, Menu, Message } from "semantic-ui-react";
+import { Button, Card, Dimmer, Icon, Image, Loader, Menu, Message, Segment } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import bookPicture from "../../assets/bookImage.png";
 import BookService from "../../services/BookService";
+import { useApiProgress } from "../../utilities/apiProgress";
+import { useTranslation } from "react-i18next";
 
 const BookList = () => {
 
+  const { t } = useTranslation();
   const [page, setPage] = useState({
     content: [], size: 4, number: 1
   });
-
   const { content: allBooks, last, first } = page;
   const [loadFailure, setLoadFailure] = useState(false);
-
+  const pendingApiCall = useApiProgress("get", "http://localhost:8080/api/v1/books/with-jpa-pagination?pageNumber");
 
   useEffect(() => {
     loadBooks();
@@ -32,9 +34,7 @@ const BookList = () => {
     const bookService = new BookService();
     setLoadFailure(false);
     bookService.getBooksWithPagination(pageNumber, pageSize).then(response => {
-      setPage(response.data
-        // books: response.data
-      );
+      setPage(response.data);
     }).catch(error => {
       setLoadFailure(true);
     });
@@ -44,8 +44,8 @@ const BookList = () => {
 
   let loadFail = (
     <Message negative>
-      <Message.Header>We're sorry we can't load the books.</Message.Header>
-      <p>Error occured...</p>
+      <Message.Header>{t("We couldn't load the books...")}</Message.Header>
+      <p>{t("Error occurred...")}</p>
     </Message>
   );
 
@@ -58,6 +58,18 @@ const BookList = () => {
         <Icon name="chevron right" />
       </Menu.Item>}
     </Menu>);
+
+  if (pendingApiCall) {
+    return (
+      (    <Segment>
+          <Dimmer active inverted>
+            <Loader inverted content={t("Loading")} />
+          </Dimmer>
+          <Image src='https://react.semantic-ui.com/images/wireframe/short-paragraph.png' />
+        </Segment>
+      )
+    )
+  }
 
   return (
     !loadFailure ?
@@ -80,10 +92,10 @@ const BookList = () => {
               <Card.Content extra>
                 <div className="ui two buttons">
                   <Button basic color="green">
-                    <Icon name="book" /> Add to Read List
+                    <Icon name="book" />{t("Add to Read List")}
                   </Button>
                   <Button basic color="red">
-                    <Icon name="heart" /> Add to Fav List
+                    <Icon name="heart" />{t("Add to Fav List")}
                   </Button>
                 </div>
               </Card.Content>

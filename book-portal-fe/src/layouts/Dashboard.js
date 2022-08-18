@@ -37,16 +37,19 @@ const Dashboard = () => {
           <Switch>
             <Route exact path="/" component={BookList} />
             <Route exact path="/books" component={BookList} />
+            <Route path="/books/search/:searchItem" component={BookList} />
             <Route path="/books/add" component={BookAdd} />
             <Route path="/books/view/:isbn" component={BookDetail} />
             <Route path="/books/edit/:isbn" component={BookUpdate} />
 
             <Route exact path="/users" component={UserList} />
+            <Route path="/users/search/:searchItem" component={UserList} />
             <Route path="/users/add" component={UserAdd} />
             <Route path="/users/view/:username" component={UserDetail} />
             <Route path="/users/edit/:username" component={UserUpdate} />
 
             <Route exact path="/authors" component={AuthorList} />
+            <Route path="/authors/search/:searchItem" component={AuthorList} />
             <Route path="/authors/add" component={AuthorAdd} />
             <Route path="/authors/view/:name" component={AuthorDetail} />
             <Route path="/authors/edit/:name" component={AuthorUpdate} />

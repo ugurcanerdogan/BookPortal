@@ -4,16 +4,21 @@ import { Button, Card, Icon, Image } from "semantic-ui-react";
 import BookService from "../../services/BookService";
 import bookPicture from "../../assets/bookImage.png";
 import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
 
-const BookDetail = () => {
+const BookDetail = (props) => {
 
+  const { t } = useTranslation();
   const { isAdmin } = useSelector(state => state.auth);
-  let { isbn } = useParams();
   const [book, setBook] = useState({});
   const [editable, setEditable] = useState(false);
+  const bookService = new BookService();
+  const { history } = props;
+  const { push } = history;
+  let { isbn } = useParams();
 
   useEffect(() => {
-    let bookService = new BookService();
     bookService.getBookByIsbn(isbn).then(book => setBook(book.data));
   }, []);
 
@@ -21,8 +26,14 @@ const BookDetail = () => {
     setEditable(isAdmin);
   }, [isAdmin]);
 
+  const deleteBook = () => {
+    bookService.deleteBook(book.id).then(() => setBook({}));
+    toast.success(t("Book deleted!"), { autoClose: 500 });
+    push("/books")
+  }
 
-  return (<div>
+  return (
+    <div>
     <Card.Group>
       <Card fluid>
         <Image src={bookPicture} size="medium" centered />
@@ -38,17 +49,27 @@ const BookDetail = () => {
         <Card.Content extra>
           <div className="ui two buttons">
             <Button basic color="green">
-              <Icon name="book" /> Add to Read List
+              <Icon name="book" /> {t("Add to Read List")}
             </Button>
             <Button basic color="red">
-              <Icon name="heart" /> Add to Fav List
+              <Icon name="heart" /> {t("Add to Fav List")}
             </Button>
           </div>
         </Card.Content>
         {editable &&
-          <Link to={`/books/edit/${book.isbn}`}>
-            <Button color="purple">Edit Book</Button>
-          </Link>}
+          <div>
+            <Link to={`/books/edit/${book.isbn}`}>
+              <Button color="purple">
+                <Icon name="edit">
+                </Icon>{t("Edit Book")}
+              </Button>
+            </Link>
+            <Button color="purple" onClick={deleteBook}>
+              <Icon name="trash">
+              </Icon>{t("Delete Book")}
+            </Button>
+          </div>
+        }
       </Card>
     </Card.Group>
   </div>);
