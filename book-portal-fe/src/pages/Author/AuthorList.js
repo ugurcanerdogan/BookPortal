@@ -4,21 +4,17 @@ import { Link } from "react-router-dom";
 import { useApiProgress } from "../../utilities/apiProgress";
 import AuthorService from "../../services/AuthorService";
 import defaultPicture from "../../assets/authorImage.png";
+import { useTranslation } from "react-i18next";
 
 const AuthorList = () => {
 
-  // const { t } = useTranslation();
-
+  const { t } = useTranslation();
   const [page, setPage] = useState({
     content: [], size: 4, number: 1
   });
-
   const { content: allAuthors, last, first } = page;
-
   const [loadFailure, setLoadFailure] = useState(false);
-
-  const pendingApiCall = useApiProgress("get", "https://localhost:8080/api/v1/authors/with-jpa-pagination?pageNumber");
-
+  const pendingApiCall = useApiProgress("get", "http://localhost:8080/api/v1/authors/with-jpa-pagination?pageNumber");
 
   useEffect(() => {
     loadAuthors();
@@ -38,9 +34,7 @@ const AuthorList = () => {
     const authorService = new AuthorService();
     setLoadFailure(false);
     authorService.getAuthorsWithPagination(pageNumber, pageSize).then(response => {
-      setPage(response.data
-        // users: response.data
-      );
+      setPage(response.data);
     }).catch(error => {
       setLoadFailure(true);
     });
@@ -50,8 +44,8 @@ const AuthorList = () => {
 
   let loadFail = (
     <Message negative>
-      <Message.Header>We're sorry we can't load the authors.</Message.Header>
-      <p>Error occured...</p>
+      <Message.Header>{t("We couldn't load the authors...")}</Message.Header>
+      <p>{t("Error occurred...")}</p>
     </Message>
   );
 
@@ -71,15 +65,15 @@ const AuthorList = () => {
   </Table.Footer>);
 
   if (pendingApiCall) {
-    actionDiv = (<Segment>
-      <Dimmer active>
-        <Loader size="large">Loading</Loader>
-      </Dimmer>
-
-      <Image src="https://react.semantic-ui.com/images/wireframe/short-paragraph.png" />
-      <Image src="https://react.semantic-ui.com/images/wireframe/short-paragraph.png" />
-      <Image src="https://react.semantic-ui.com/images/wireframe/short-paragraph.png" />
-    </Segment>);
+    return (
+      (    <Segment>
+          <Dimmer active inverted>
+            <Loader inverted content={t("Loading")} />
+          </Dimmer>
+          <Image src='https://react.semantic-ui.com/images/wireframe/short-paragraph.png' />
+        </Segment>
+      )
+    )
   }
 
   // USER FOTO EKLENECEK
@@ -90,11 +84,10 @@ const AuthorList = () => {
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell></Table.HeaderCell>
-              <Table.HeaderCell>Name-Surname</Table.HeaderCell>
-              <Table.HeaderCell>E-Mail</Table.HeaderCell>
+              <Table.HeaderCell>{t("Name-Surname")}</Table.HeaderCell>
+              <Table.HeaderCell>{t("E-mail")}</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
-
           <Table.Body>
             {allAuthors.map((author) => (
               <Table.Row>

@@ -1,60 +1,65 @@
 import React, { useEffect, useState } from "react";
 import { Dimmer, Icon, Image, Loader, Menu, Message, Segment, Table } from "semantic-ui-react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useApiProgress } from "../../utilities/apiProgress";
 import UserService from "../../services/UserService";
 import defaultPicture from "../../assets/userImage.png";
+import { useTranslation } from "react-i18next";
 
 const UserList = () => {
 
-  // const { t } = useTranslation();
-
+  const { t } = useTranslation();
   const { username } = useSelector(state => state.auth);
-
   const [page, setPage] = useState({
     content: [], size: 4, number: 1
   });
-
   const { content: allUsers, last, first } = page;
-
   const [loadFailure, setLoadFailure] = useState(false);
-
-  const pendingApiCall = useApiProgress("get", "https://localhost:8080/api/v1/users/with-jpa-pagination?pageNumber");
-
+  const pendingApiCall = useApiProgress("get", "http://localhost:8080/api/v1/users/with-jpa-pagination?pageNumber");
+  const { searchItem } = useParams();
 
   useEffect(() => {
-    loadUsers(username);
+    loadUsers(searchItem, username);
   }, []);
 
   const onClickNext = () => {
     const prevPage = page.number + 1;
-    loadUsers(username, prevPage);
+    loadUsers(searchItem, username, prevPage);
   };
 
   const onClickPrevious = () => {
     const nextPage = page.number - 1;
-    loadUsers(username, nextPage);
+    loadUsers(searchItem, username, nextPage);
   };
 
-  const loadUsers = (loggedInUsername, pageNumber, pageSize) => {
+  const loadUsers = (searchItem, loggedInUsername, pageNumber, pageSize) => {
     const userService = new UserService();
     setLoadFailure(false);
-    userService.getUsersWithPagination(loggedInUsername, pageNumber, pageSize).then(response => {
-      setPage(response.data
-        // users: response.data
-      );
-    }).catch(error => {
-      setLoadFailure(true);
-    });
+    if (searchItem){
+      userService.getUsersWithName(searchItem, loggedInUsername, pageNumber, pageSize).then(response => {
+        setPage(response.data);
+      }).catch(error => {
+        setLoadFailure(true);
+      });
+    }
+    else {
+      userService.getUsersWithPagination(loggedInUsername, pageNumber, pageSize).then(response => {
+        setPage(response.data
+          // users: response.data
+        );
+      }).catch(error => {
+        setLoadFailure(true);
+      });
+    }
   };
 
   let notOnlyOnePage = last && first;
 
   let loadFail = (
     <Message negative>
-      <Message.Header>We're sorry we can't load the users.</Message.Header>
-      <p>Error occured...</p>
+      <Message.Header>{t("We couldn't load the users...")}</Message.Header>
+      <p>{t("Error occurred...")}</p>
     </Message>
   );
 
@@ -74,15 +79,15 @@ const UserList = () => {
   </Table.Footer>);
 
   if (pendingApiCall) {
-    actionDiv = (<Segment>
-      <Dimmer active>
-        <Loader size="large">Loading</Loader>
-      </Dimmer>
-
-      <Image src="https://react.semantic-ui.com/images/wireframe/short-paragraph.png" />
-      <Image src="https://react.semantic-ui.com/images/wireframe/short-paragraph.png" />
-      <Image src="https://react.semantic-ui.com/images/wireframe/short-paragraph.png" />
-    </Segment>);
+    return (
+      (    <Segment>
+          <Dimmer active inverted>
+            <Loader inverted content={t("Loading")} />
+          </Dimmer>
+          <Image src='https://react.semantic-ui.com/images/wireframe/short-paragraph.png' />
+        </Segment>
+      )
+    )
   }
 
   // USER FOTO EKLENECEK
@@ -93,11 +98,10 @@ const UserList = () => {
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell></Table.HeaderCell>
-              <Table.HeaderCell>Name-Surname</Table.HeaderCell>
-              <Table.HeaderCell>E-Mail</Table.HeaderCell>
+              <Table.HeaderCell>{t("Name-Surname")}</Table.HeaderCell>
+              <Table.HeaderCell>{t("E-mail")}</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
-
           <Table.Body>
             {allUsers.map((user) => (
               <Table.Row>

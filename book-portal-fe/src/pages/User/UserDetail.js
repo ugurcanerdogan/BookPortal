@@ -5,51 +5,67 @@ import UserService from "../../services/UserService";
 import userImage from "../../assets/userImage.png";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
 
-const UserDetail = () => {
-
-  const { isAdmin, sub: loggedInUsername } = useSelector(state => state.auth);
+const UserDetail = (props) => {
 
   const { t } = useTranslation();
+  const { isAdmin, sub: loggedInUsername } = useSelector(state => state.auth);
   const [user, setUser] = useState({});
   const [editable, setEditable] = useState(false);
-
-  let routeParams = useParams();
-  const pathUserName = routeParams.username;
-
-  useEffect(() => {
-    let userService = new UserService();
-    userService.getUserByUsername(pathUserName).then(user => setUser(user.data));
-  }, []);
+  const userService = new UserService();
+  const { history } = props;
+  const { push } = history;
+  const { username } = useParams();
 
   useEffect(() => {
-    setEditable(isAdmin || pathUserName === loggedInUsername);
-  }, [isAdmin, pathUserName, loggedInUsername]);
+    userService.getUserByUsername(username).then(user => setUser(user.data));
+  }, [username]);
 
+  useEffect(() => {
+    setEditable(isAdmin || username === loggedInUsername);
+  }, [isAdmin, username, loggedInUsername]);
 
-  return (<div>
+  const deleteUser = () => {
+    userService.deleteUser(user.id).then(() => setUser({}));
+    toast.success(t("User deleted!"), { autoClose: 500 });
+    push("/users")
+  }
+
+  return (
+    <div>
     <Card fluid>
       <Image src={userImage} size="medium" centered />
       <Card.Content>
         <Card.Header>{user.name}</Card.Header>
         <Card.Meta>
-          <span className="date">Joined in 2015</span>
+          <span className="date">{t("Info")}</span>
         </Card.Meta>
         <Card.Description>
-          Matthew is a musician living in Nashville.
+          {t("Additional info")}
         </Card.Description>
       </Card.Content>
       <Card.Content extra>
         <a>
           <Icon name="book" />
-          22 books has read
+          {t(".. books read")}
         </a>
       </Card.Content>
       {editable &&
-        <Link to={`/users/edit/${user.username}`}>
-          <Button color="yellow">Edit User</Button>
-        </Link>}
-
+        <div>
+          <Link to={`/users/edit/${user.username}`}>
+            <Button color="yellow">
+              <Icon name="edit">
+              </Icon>{t("Edit User")}
+            </Button>
+          </Link>
+          { isAdmin &&
+            <Button color="yellow" onClick={deleteUser}>
+            <Icon name="trash">
+            </Icon>{t("Delete User")}
+          </Button>}
+        </div>
+      }
     </Card>
   </div>);
 };
