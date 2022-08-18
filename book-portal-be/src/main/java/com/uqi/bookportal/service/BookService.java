@@ -116,7 +116,7 @@ public class BookService {
 
 	public Page<Book> findAllWithJpaPagination(int pageNumber, int pageSize) {
 		var paged = PageRequest.of(pageNumber, pageSize);
-		return bookRepository.findAll(paged);
+		return bookRepository.findAllByActiveTrue(paged);
 	}
 
 	public Book update(long id, BookUpdateDTO bookUpdateDTO) {

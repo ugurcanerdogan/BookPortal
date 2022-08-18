@@ -3,6 +3,7 @@ package com.uqi.bookportal.repo;
 import java.util.List;
 import java.util.Optional;
 
+import com.uqi.bookportal.model.Book;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,7 +16,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 	Optional<User> findByUsername(String username);
 
-	Page<User> findByUsernameNot(String username, Pageable page);
+	Page<User> findAllByActiveTrueAndUsernameNot(String username, Pageable pageable);
 
 	Optional<User> findByName(String name);
 

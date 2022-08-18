@@ -45,16 +45,19 @@ public class AuthorController {
 	}
 
 	@GetMapping("")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
 	public ResponseEntity<List<Author>> getAuthors() {
 		return ResponseEntity.ok(authorService.findAll());
 	}
 
 	@GetMapping("/by-author-name")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
 	public ResponseEntity<Author> searchAuthors(@RequestParam(name = "authorName") String authorName) {
 		return ResponseEntity.ok(authorService.findByName(authorName));
 	}
 
 	@GetMapping("/with-jpa-pagination")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
 	public ResponseEntity<Page<Author>> getAuthorsWithJpaPagination(
 			@RequestParam(name = "pageNumber", defaultValue = "1") int pageNumber,
 			@RequestParam(name = "pageSize", defaultValue = "5") int pageSize) {

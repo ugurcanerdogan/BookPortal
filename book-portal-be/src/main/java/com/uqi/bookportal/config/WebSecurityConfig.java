@@ -81,7 +81,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				authenticationManagerBean());
 		customAuthenticationFilter.setFilterProcessesUrl("/api/v1/login");
 		http.csrf().disable().cors().configurationSource(corsConfigurationSource()).and().authorizeRequests()
-				.antMatchers(AUTH_WHITELIST).anonymous().antMatchers("/api/v1/registration/**", "/api/v1/login/**")
+				.antMatchers(AUTH_WHITELIST).anonymous().antMatchers("/api/v1/users/registration/**", "/api/v1/login/**")
 				.permitAll().anyRequest().authenticated().and().exceptionHandling()
 				.accessDeniedHandler((req, resp, ex) -> resp.setStatus(SC_FORBIDDEN))
 				.authenticationEntryPoint((req, resp, ex) -> resp.setStatus(SC_UNAUTHORIZED)).and().sessionManagement()
