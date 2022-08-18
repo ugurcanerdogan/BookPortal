@@ -10,6 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.uqi.bookportal.model.User;
+import com.uqi.bookportal.model.dto.RegistrationRequest;
 import com.uqi.bookportal.model.dto.UserDTO;
 import com.uqi.bookportal.model.dto.UserUpdateDTO;
 import com.uqi.bookportal.service.UserService;
@@ -60,13 +61,13 @@ public class UserController {
 	}
 
 	@GetMapping("")
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
 	public ResponseEntity<List<User>> getUsers() {
 		return ResponseEntity.ok(userService.findAll());
 	}
 
 	@GetMapping("/by-username")
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
 	public ResponseEntity<User> searchUserByUsername(@RequestParam(name = "username") String username) {
 		return ResponseEntity.ok(userService.findByUsername(username));
 	}
@@ -90,7 +91,7 @@ public class UserController {
 	}
 
 	@GetMapping("/with-jpa-pagination")
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
 	public ResponseEntity<Page<User>> getUsersWithJpaPagination(
 			@RequestParam(name = "pageNumber", defaultValue = "1") int pageNumber,
 			@RequestParam(name = "pageSize", defaultValue = "5") int pageSize,
@@ -117,7 +118,7 @@ public class UserController {
 	}
 
 	@PutMapping("/{userId}")
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")// currentUser alınırsa role_admin olarak değişecek
 	public ResponseEntity<User> updateUser(@Valid @PathVariable(name = "userId") long id,
 			@Valid @RequestBody UserUpdateDTO userUpdateDTO) {
 		return ResponseEntity.ok(userService.update(id, userUpdateDTO));
@@ -127,6 +128,11 @@ public class UserController {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<User> removeUser(@PathVariable(name = "userId") long id) {
 		return ResponseEntity.ok(userService.remove(id));
+	}
+
+	@PostMapping("/registration")
+	public ResponseEntity<User> register(@RequestBody RegistrationRequest request) {
+		return ResponseEntity.ok(userService.register(request));
 	}
 
 }

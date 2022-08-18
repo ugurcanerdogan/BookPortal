@@ -74,7 +74,7 @@ public class AuthorService {
 
 	public Page<Author> findAllWithJpaPagination(int pageNumber, int pageSize) {
 		var paged = PageRequest.of(pageNumber, pageSize);
-		return authorRepository.findAll(paged);
+		return authorRepository.findAllByActiveTrue(paged);
 	}
 
 	public Author update(long id, AuthorUpdateDTO authorUpdateDTO) {

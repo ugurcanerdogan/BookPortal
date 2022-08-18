@@ -3,10 +3,10 @@ package com.uqi.bookportal.service;
 import java.util.List;
 import java.util.Set;
 
+import com.uqi.bookportal.config.EmailValidator;
+import com.uqi.bookportal.model.dto.RegistrationRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -20,6 +20,7 @@ import com.uqi.bookportal.model.dto.UserUpdateDTO;
 import com.uqi.bookportal.repo.BookRepository;
 import com.uqi.bookportal.repo.RoleRepository;
 import com.uqi.bookportal.repo.UserRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -32,12 +33,16 @@ public class UserService implements UserDetailsService {
 
 	private final PasswordEncoder passwordEncoder;
 
+	private final EmailValidator emailValidator;
+
 	public UserService(UserRepository userRepository, RoleRepository roleRepository, BookRepository bookRepository,
-			PasswordEncoder passwordEncoder) {
+			PasswordEncoder passwordEncoder, EmailValidator emailValidator) {
 		this.userRepository = userRepository;
 		this.roleRepository = roleRepository;
 		this.bookRepository = bookRepository;
 		this.passwordEncoder = passwordEncoder;
+		this.emailValidator = emailValidator;
+
 	}
 
 	public User addBookToReadingList(long userId, long bookId) {
@@ -122,7 +127,7 @@ public class UserService implements UserDetailsService {
 
 	public Page<User> findAllWithJpaPagination(int pageNumber, int pageSize, String username) {
 		var paged = PageRequest.of(pageNumber, pageSize);
-		return userRepository.findByUsernameNot(username, paged);
+		return userRepository.findAllByActiveTrueAndUsernameNot(username, paged);
 	}
 
 	public User update(long id, UserUpdateDTO userUpdateDTO) {
@@ -152,7 +157,7 @@ public class UserService implements UserDetailsService {
 		return userRepository.findByUsername(email).isPresent();
 	}
 
-	public ResponseEntity signUpUser(String name, String username, String password) {
+	public User signUpUser(String name, String username, String password) {
 
 		String encodedPsw = passwordEncoder.encode(password);
 		User user = new User();
@@ -161,8 +166,20 @@ public class UserService implements UserDetailsService {
 		user.setPassword(encodedPsw);
 		var userRoleOpt = roleRepository.findByName("ROLE_USER");
 		userRoleOpt.ifPresent((userRole) -> user.setRoles(Set.of(userRoleOpt.get())));
-		userRepository.save(user);
-		return new ResponseEntity<>(user, HttpStatus.ACCEPTED);
+		return userRepository.save(user);
+	}
+
+	@Transactional
+	public User register(RegistrationRequest request) {
+
+		boolean isValidEmail = emailValidator.test(request.username());
+		if (!isValidEmail) {
+			throw new IllegalArgumentException("Not a valid email");
+		}
+		if (!userExists(request.username())) {
+			return signUpUser(request.name(), request.username(), request.password());
+		}
+		throw new IllegalArgumentException("Email already taken");
 	}
 
 }
