@@ -63,8 +63,13 @@ public class User extends EntityBase {
 	}
 
 	public void addToFavoriteList(Book book) {
-		this.favoriteList.add(book);
-		book.getUsersThatAddedThisFavoriteList().add(this);
+		if(this.favoriteList.contains(book)){
+			throw new IllegalStateException("Book is already in the favorite list...");
+		}
+		else{
+			this.favoriteList.add(book);
+			book.getUsersThatAddedThisFavoriteList().add(this);
+		}
 	}
 
 	public void removeFromFavoriteList(Book book) {
@@ -77,8 +82,13 @@ public class User extends EntityBase {
 	}
 
 	public void addToReadingList(Book book) {
-		this.readList.add(book);
-		book.getUsersThatAddedThisReadingList().add(this);
+		if(this.readList.contains(book)){
+			throw new IllegalStateException("Book is already in the reading list...");
+		}
+		else{
+			this.readList.add(book);
+			book.getUsersThatAddedThisReadingList().add(this);
+		}
 	}
 
 	public void removeFromReadingList(Book book) {
