@@ -66,14 +66,14 @@ const AuthorList = () => {
 
   if (pendingApiCall) {
     return (
-      (    <Segment>
+      (<Segment>
           <Dimmer active inverted>
             <Loader inverted content={t("Loading")} />
           </Dimmer>
-          <Image src='https://react.semantic-ui.com/images/wireframe/short-paragraph.png' />
+          <Image src="https://react.semantic-ui.com/images/wireframe/short-paragraph.png" />
         </Segment>
       )
-    )
+    );
   }
 
   // USER FOTO EKLENECEK

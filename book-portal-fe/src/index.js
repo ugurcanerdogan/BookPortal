@@ -8,7 +8,7 @@ import "./i18n";
 import "semantic-ui-css/semantic.min.css";
 import reportWebVitals from "./reportWebVitals";
 import configureStore from "./store/configureStore";
-import "react-toastify/dist/ReactToastify.min.css"
+import "react-toastify/dist/ReactToastify.min.css";
 
 const store = configureStore();
 

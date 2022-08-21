@@ -37,7 +37,7 @@ export const UserUpdate = (props) => {
     const { history } = props;
     const { push } = history;
 
-    try{
+    try {
       const response = await userService.updateUser(user.id, values);
       setUser(response);
       toast.success(t("User updated!"), { autoClose: 500 });
@@ -45,7 +45,7 @@ export const UserUpdate = (props) => {
         dispatch(refreshUserHandler(response.data.name));
       }
       push("/users");
-    }catch (apiError){
+    } catch (apiError) {
       toast.error(t("Update failed..."), { autoClose: 750 });
     }
   };

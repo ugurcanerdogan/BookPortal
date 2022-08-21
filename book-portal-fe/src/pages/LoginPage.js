@@ -27,7 +27,7 @@ const LoginPage = (props) => {
     try {
       await dispatch(loginHandler(values));
       toast.success(t("Redirecting..."), { autoClose: 500 });
-      push("/")
+      push("/");
     } catch (apiError) {
       toast.error(t("Log in failed..."), { autoClose: 750 });
     }

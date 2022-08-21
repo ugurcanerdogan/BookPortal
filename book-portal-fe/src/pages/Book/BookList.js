@@ -37,20 +37,20 @@ const BookList = () => {
   };
 
   const addToReadList = async (bookId) => {
-    try{
-      await userService.addBookToReadList(id,bookId)
-      toast.success(t("Book is added to your reading list!"))
-    }catch (e){
-      toast.error(t("Book is already in your reading list!"))
+    try {
+      await userService.addBookToReadList(id, bookId);
+      toast.success(t("Book is added to your reading list!"));
+    } catch (e) {
+      toast.error(t("Book is already in your reading list!"));
     }
   };
 
   const addToFavList = async (bookId) => {
-    try{
-      await userService.addBookToFavList(id,bookId)
-      toast.success(t("Book is added to your favorite list!"))
-    }catch (e){
-      toast.error(t("Book is already in your favorite list!"))
+    try {
+      await userService.addBookToFavList(id, bookId);
+      toast.success(t("Book is added to your favorite list!"));
+    } catch (e) {
+      toast.error(t("Book is already in your favorite list!"));
     }
   };
 
@@ -84,14 +84,14 @@ const BookList = () => {
 
   if (pendingApiCall) {
     return (
-      (    <Segment>
+      (<Segment>
           <Dimmer active inverted>
             <Loader inverted content={t("Loading")} />
           </Dimmer>
-          <Image src='https://react.semantic-ui.com/images/wireframe/short-paragraph.png' />
+          <Image src="https://react.semantic-ui.com/images/wireframe/short-paragraph.png" />
         </Segment>
       )
-    )
+    );
   }
 
   return (
@@ -114,10 +114,14 @@ const BookList = () => {
               </Card.Content>
               <Card.Content extra>
                 <div className="ui two buttons">
-                  <Button onClick={()=>{addToReadList(book.id)}} basic color="green">
+                  <Button onClick={() => {
+                    addToReadList(book.id);
+                  }} basic color="green">
                     <Icon name="book" />{t("Add to Read List")}
                   </Button>
-                  <Button onClick={()=>{addToFavList(book.id)}} basic color="red">
+                  <Button onClick={() => {
+                    addToFavList(book.id);
+                  }} basic color="red">
                     <Icon name="heart" />{t("Add to Fav List")}
                   </Button>
                 </div>

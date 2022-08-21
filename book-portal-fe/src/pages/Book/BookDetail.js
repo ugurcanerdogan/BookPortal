@@ -35,24 +35,24 @@ const BookDetail = (props) => {
   const deleteBook = () => {
     bookService.deleteBook(book.id).then(() => setBook({}));
     toast.success(t("Book deleted!"), { autoClose: 500 });
-    push("/books")
-  }
+    push("/books");
+  };
 
   const addToReadList = async () => {
-    try{
-      await userService.addBookToReadList(id,book.id)
-      toast.success("Book is added to your reading list!")
-    }catch (e){
-      toast.error("Book is already in your reading list!")
+    try {
+      await userService.addBookToReadList(id, book.id);
+      toast.success("Book is added to your reading list!");
+    } catch (e) {
+      toast.error("Book is already in your reading list!");
     }
   };
 
   const addToFavList = async () => {
-    try{
-      await userService.addBookToFavList(id,book.id)
-      toast.success("Book is added to your favorite list!")
-    }catch (e){
-      toast.error("Book is already in your favorite list!")
+    try {
+      await userService.addBookToFavList(id, book.id);
+      toast.success("Book is added to your favorite list!");
+    } catch (e) {
+      toast.error("Book is already in your favorite list!");
     }
   };
 
@@ -65,58 +65,58 @@ const BookDetail = (props) => {
 
   if (pendingApiCall) {
     return (
-      (    <Segment>
+      (<Segment>
           <Dimmer active inverted>
             <Loader inverted content={t("Loading")} />
           </Dimmer>
-          <Image src='https://react.semantic-ui.com/images/wireframe/short-paragraph.png' />
+          <Image src="https://react.semantic-ui.com/images/wireframe/short-paragraph.png" />
         </Segment>
       )
-    )
+    );
   }
 
   return (
     !loadFailure ?
-    <div>
-    <Card.Group>
-      <Card fluid>
-        <Image src={bookPicture} size="medium" centered />
-        <Card.Content>
-          <Card.Header>{book.title}</Card.Header>
-          <Card.Meta>
-            <span className="date">{book.year}</span>
-          </Card.Meta>
-          <Card.Description>
-            {book.publisher}
-          </Card.Description>
-        </Card.Content>
-        <Card.Content extra>
-          <div className="ui two buttons">
-            <Button onClick={() => addToReadList()} basic color="green">
-              <Icon name="book" /> {t("Add to Read List")}
-            </Button>
-            <Button onClick={() => addToFavList()} basic color="red">
-              <Icon name="heart" /> {t("Add to Fav List")}
-            </Button>
-          </div>
-        </Card.Content>
-        {editable &&
-          <div>
-            <Link to={`/books/edit/${book.isbn}`}>
-              <Button color="purple">
-                <Icon name="edit">
-                </Icon>{t("Edit Book")}
-              </Button>
-            </Link>
-            <Button color="purple" onClick={deleteBook}>
-              <Icon name="trash">
-              </Icon>{t("Delete Book")}
-            </Button>
-          </div>
-        }
-      </Card>
-    </Card.Group>
-  </div>
+      <div>
+        <Card.Group>
+          <Card fluid>
+            <Image src={bookPicture} size="medium" centered />
+            <Card.Content>
+              <Card.Header>{book.title}</Card.Header>
+              <Card.Meta>
+                <span className="date">{book.year}</span>
+              </Card.Meta>
+              <Card.Description>
+                {book.publisher}
+              </Card.Description>
+            </Card.Content>
+            <Card.Content extra>
+              <div className="ui two buttons">
+                <Button onClick={() => addToReadList()} basic color="green">
+                  <Icon name="book" /> {t("Add to Read List")}
+                </Button>
+                <Button onClick={() => addToFavList()} basic color="red">
+                  <Icon name="heart" /> {t("Add to Fav List")}
+                </Button>
+              </div>
+            </Card.Content>
+            {editable &&
+              <div>
+                <Link to={`/books/edit/${book.isbn}`}>
+                  <Button color="purple">
+                    <Icon name="edit">
+                    </Icon>{t("Edit Book")}
+                  </Button>
+                </Link>
+                <Button color="purple" onClick={deleteBook}>
+                  <Icon name="trash">
+                  </Icon>{t("Delete Book")}
+                </Button>
+              </div>
+            }
+          </Card>
+        </Card.Group>
+      </div>
       : loadFail
   );
 };

@@ -9,7 +9,7 @@ function App() {
 
   return (
     <div className="App">
-      <ToastContainer theme="colored" position="bottom-right"/>
+      <ToastContainer theme="colored" position="bottom-right" />
       <Navi />
       <Container className="main">
         <Dashboard />

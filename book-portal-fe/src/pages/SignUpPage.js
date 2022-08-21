@@ -6,7 +6,7 @@ import * as Yup from "yup";
 import { useTranslation } from "react-i18next";
 import UqiTextInput from "../utilities/customFormControls/UqiTextInput";
 import { signupHandler } from "../store/actions/authActions";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 
 
 const SignUpPage = (props) => {
@@ -28,7 +28,7 @@ const SignUpPage = (props) => {
     try {
       await dispatch(signupHandler(values));
       toast.success(t("Redirecting..."), { autoClose: 500 });
-      push("/")
+      push("/");
     } catch (apiError) {
       toast.error(t("Sign up failed..."), { autoClose: 750 });
       console.log(apiError);

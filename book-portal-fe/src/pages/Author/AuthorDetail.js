@@ -33,8 +33,8 @@ const AuthorDetail = (props) => {
   const deleteAuthor = () => {
     authorService.deleteAuthor(author.id).then(() => setAuthor({}));
     toast.success(t("Author deleted!"), { autoClose: 500 });
-    push("/authors")
-  }
+    push("/authors");
+  };
 
   let loadFail = (
     <Message negative>
@@ -45,46 +45,46 @@ const AuthorDetail = (props) => {
 
   if (pendingApiCall) {
     return (
-      (    <Segment>
+      (<Segment>
           <Dimmer active inverted>
             <Loader inverted content={t("Loading")} />
           </Dimmer>
-          <Image src='https://react.semantic-ui.com/images/wireframe/short-paragraph.png' />
+          <Image src="https://react.semantic-ui.com/images/wireframe/short-paragraph.png" />
         </Segment>
       )
-    )
+    );
   }
 
   return (
     !loadFailure ?
       <div>
-    <Card fluid>
-      <Image src={authorImage} size="medium" centered />
-      <Card.Content>
-        <Card.Header>{author.name}</Card.Header>
-        <Card.Meta>
-          <span>{author.gender}</span>
-        </Card.Meta>
-        <Card.Description>
-          {author.email}
-        </Card.Description>
-      </Card.Content>
-      {editable &&
-        <div>
-          <Link to={`/authors/edit/${author.name}`}>
-            <Button color="yellow">
-              <Icon name="edit">
-              </Icon>{t("Edit Author")}
-            </Button>
-          </Link>
-            <Button color="yellow" onClick={deleteAuthor}>
-              <Icon name="trash">
-              </Icon>{t("Delete Author")}
-            </Button>
-        </div>
-      }
-    </Card>
-  </div>
+        <Card fluid>
+          <Image src={authorImage} size="medium" centered />
+          <Card.Content>
+            <Card.Header>{author.name}</Card.Header>
+            <Card.Meta>
+              <span>{author.gender}</span>
+            </Card.Meta>
+            <Card.Description>
+              {author.email}
+            </Card.Description>
+          </Card.Content>
+          {editable &&
+            <div>
+              <Link to={`/authors/edit/${author.name}`}>
+                <Button color="yellow">
+                  <Icon name="edit">
+                  </Icon>{t("Edit Author")}
+                </Button>
+              </Link>
+              <Button color="yellow" onClick={deleteAuthor}>
+                <Icon name="trash">
+                </Icon>{t("Delete Author")}
+              </Button>
+            </div>
+          }
+        </Card>
+      </div>
       : loadFail
   );
 };

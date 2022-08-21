@@ -10,14 +10,14 @@ const Categories = () => {
   return (
     <div>
       <Menu pointing vertical>
-        <Menu.Item as={Link} to="/books" >
-          <Icon name="book"/>
+        <Menu.Item as={Link} to="/books">
+          <Icon name="book" />
           {t("Books")}</Menu.Item>
-        <Menu.Item as={Link} to="/users" >
-          <Icon name="users"/>
+        <Menu.Item as={Link} to="/users">
+          <Icon name="users" />
           {t("Users")}</Menu.Item>
-        <Menu.Item as={Link} to="/authors" >
-          <Icon name="pencil"/>
+        <Menu.Item as={Link} to="/authors">
+          <Icon name="pencil" />
           {t("Authors")}</Menu.Item>
       </Menu>
     </div>
