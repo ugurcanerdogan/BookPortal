@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Button, Card, Icon, Image } from "semantic-ui-react";
+import { Button, Card, Dimmer, Icon, Image, Loader, Message, Segment } from "semantic-ui-react";
 import AuthorService from "../../services/AuthorService";
 import authorImage from "../../assets/authorImage.png";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
+import { useApiProgress } from "../../utilities/apiProgress";
 
 const AuthorDetail = (props) => {
 
@@ -13,13 +14,16 @@ const AuthorDetail = (props) => {
   const { isAdmin } = useSelector(state => state.auth);
   const [author, setAuthor] = useState({});
   const [editable, setEditable] = useState(false);
+  const [loadFailure, setLoadFailure] = useState(false);
   const authorService = new AuthorService();
   const { history } = props;
   const { push } = history;
   const { name } = useParams();
+  const pendingApiCall = useApiProgress("get", "http://localhost:8080/api/v1/authors/by-author-name?authorName=");
 
   useEffect(() => {
-    authorService.getAuthorByEmail(name).then(author => setAuthor(author.data));
+    setLoadFailure(false);
+    authorService.getAuthorByEmail(name).then(author => setAuthor(author.data)).catch(error => setLoadFailure(true));
   }, []);
 
   useEffect(() => {
@@ -32,8 +36,28 @@ const AuthorDetail = (props) => {
     push("/authors")
   }
 
+  let loadFail = (
+    <Message negative>
+      <Message.Header>{t("We couldn't load the author...")}</Message.Header>
+      <p>{t("Error occurred...")}</p>
+    </Message>
+  );
+
+  if (pendingApiCall) {
+    return (
+      (    <Segment>
+          <Dimmer active inverted>
+            <Loader inverted content={t("Loading")} />
+          </Dimmer>
+          <Image src='https://react.semantic-ui.com/images/wireframe/short-paragraph.png' />
+        </Segment>
+      )
+    )
+  }
+
   return (
-    <div>
+    !loadFailure ?
+      <div>
     <Card fluid>
       <Image src={authorImage} size="medium" centered />
       <Card.Content>
@@ -60,7 +84,9 @@ const AuthorDetail = (props) => {
         </div>
       }
     </Card>
-  </div>);
+  </div>
+      : loadFail
+  );
 };
 
 export default AuthorDetail;

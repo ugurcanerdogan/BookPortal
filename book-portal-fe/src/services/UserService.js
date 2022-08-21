@@ -6,6 +6,10 @@ export default class UserService {
     return axios.get(`http://localhost:8080/api/v1/users/by-username?username=${username}`);
   };
 
+  getUser = (userId) => {
+    return axios.get(`http://localhost:8080/api/v1/users/${userId}`);
+  };
+
   getUsers = () => {
     return axios.get("http://localhost:8080/api/v1/users/");
   };
@@ -28,5 +32,21 @@ export default class UserService {
 
   deleteUser = (id) => {
     return axios.delete(`http://localhost:8080/api/v1/users/${id}`);
+  };
+
+  addBookToReadList = (userId, bookId) => {
+    return axios.post(`http://localhost:8080/api/v1/users/add-book-to-read-list?userId=${userId}&bookId=${bookId}`)
+  };
+
+  addBookToFavList = (userId, bookId) => {
+    return axios.post(`http://localhost:8080/api/v1/users/add-book-to-favorite-list?userId=${userId}&bookId=${bookId}`);
+  };
+
+  removeBookFromReadList = (userId, bookId) => {
+    return axios.delete(`http://localhost:8080/api/v1/users/remove-book-from-read-list?userId=${userId}&bookId=${bookId}`)
+  };
+
+  removeBookFromFavList = (userId, bookId) => {
+    return axios.delete(`http://localhost:8080/api/v1/users/remove-book-from-favorite-list?userId=${userId}&bookId=${bookId}`);
   };
 }
