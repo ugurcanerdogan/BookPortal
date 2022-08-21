@@ -36,14 +36,13 @@ const UserList = () => {
   const loadUsers = (searchItem, loggedInUsername, pageNumber, pageSize) => {
     const userService = new UserService();
     setLoadFailure(false);
-    if (searchItem){
+    if (searchItem) {
       userService.getUsersWithName(searchItem, loggedInUsername, pageNumber, pageSize).then(response => {
         setPage(response.data);
       }).catch(error => {
         setLoadFailure(true);
       });
-    }
-    else {
+    } else {
       userService.getUsersWithPagination(loggedInUsername, pageNumber, pageSize).then(response => {
         setPage(response.data
           // users: response.data
@@ -80,14 +79,14 @@ const UserList = () => {
 
   if (pendingApiCall) {
     return (
-      (    <Segment>
+      (<Segment>
           <Dimmer active inverted>
             <Loader inverted content={t("Loading")} />
           </Dimmer>
-          <Image src='https://react.semantic-ui.com/images/wireframe/short-paragraph.png' />
+          <Image src="https://react.semantic-ui.com/images/wireframe/short-paragraph.png" />
         </Segment>
       )
-    )
+    );
   }
 
   // USER FOTO EKLENECEK

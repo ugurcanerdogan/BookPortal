@@ -28,8 +28,8 @@ const UserDetail = (props) => {
     setLoadFailure(false);
     userService.getUserByUsername(username).then(user => {
       setUser(user.data);
-      setReadList(user.data.readList)
-      setFavList(user.data.favoriteList)
+      setReadList(user.data.readList);
+      setFavList(user.data.favoriteList);
     }).catch(error => setLoadFailure(true));
   }, [username]);
 
@@ -41,21 +41,21 @@ const UserDetail = (props) => {
     userService.deleteUser(user.id).then(() => setUser({}));
     toast.success(t("User deleted!"), { autoClose: 500 });
     // push(`/users/view/${user.username}`)
-    push("/users")
-  }
+    push("/users");
+  };
 
   const removeFromReadingList = async (bookId) => {
-    await userService.removeBookFromReadList(user.id, bookId)
+    await userService.removeBookFromReadList(user.id, bookId);
     toast.success(t("Book removed from reading list!"), { autoClose: 500 });
     // push(`/users/view/${user.username}`)
-    push("/users")
-  }
+    push("/users");
+  };
 
   const removeFromFavList = async (bookId) => {
-    await userService.removeBookFromFavList(user.id, bookId)
+    await userService.removeBookFromFavList(user.id, bookId);
     toast.success(t("Book removed from favorite list!"), { autoClose: 500 });
-    push("/users")
-  }
+    push("/users");
+  };
 
   let loadFail = (
     <Message negative>
@@ -66,14 +66,14 @@ const UserDetail = (props) => {
 
   if (pendingApiCall) {
     return (
-      (    <Segment>
+      (<Segment>
           <Dimmer active inverted>
             <Loader inverted content={t("Loading")} />
           </Dimmer>
-          <Image src='https://react.semantic-ui.com/images/wireframe/short-paragraph.png' />
+          <Image src="https://react.semantic-ui.com/images/wireframe/short-paragraph.png" />
         </Segment>
       )
-    )
+    );
   }
 
   let emptyList = (
@@ -81,92 +81,94 @@ const UserDetail = (props) => {
       <Message.Header>{t("The list is empty.")}</Message.Header>
       <p>{t("You can add books to your lists from book menu!")}</p>
     </Message>
-  )
+  );
 
   return (
     !loadFailure ?
-    <div>
-    <Card fluid>
-      <Image src={userImage} size="medium" centered />
-      <Card.Content>
-        <Card.Header>{user.name}</Card.Header>
-        <Card.Meta>
-          <span className="date">{t("Info")}</span>
-        </Card.Meta>
-        <Card.Description>
-          {t("Additional info")}
-        </Card.Description>
-      </Card.Content>
-      <Card.Content extra>
-        <a>
-          <Icon name="book" />
-          {t("Number of books read: ")}{readList.length}
-        </a>
-      </Card.Content>
-      {editable &&
-        <div>
-          <Link to={`/users/edit/${user.username}`}>
-            <Button color="yellow">
-              <Icon name="edit">
-              </Icon>{t("Edit User")}
-            </Button>
-          </Link>
-          { isAdmin &&
-            <Button color="yellow" onClick={deleteUser}>
-            <Icon name="trash">
-            </Icon>{t("Delete User")}
-          </Button>}
-        </div>
-      }
-    </Card>
-      {
-        isAdmin && editable &&
-        <Grid stackable columns={2}>
-          <Grid.Column>
-            <Segment>
-              <Header color='green' as="h4" icon block textAlign="center">
-                <Icon name="book" circular />
-                <Header.Content>{t("Reading List")}</Header.Content>
-              </Header>
-              <List celled animated verticalAlign='middle'>
-                {readList.length !== 0 ? readList.map((book) => (
-                  <List.Item>
-                    <Image avatar src={bookPicture} />
-                    <List.Content  as={Link} to={"/books/view/" + book.isbn}>
-                      <List.Header>{book.title}</List.Header>
-                    </List.Content>
-                    <List.Content floated='right'>
-                      <Button onClick={() => removeFromReadingList(book.id)} size="mini" icon="delete" color="orange">Remove</Button>
-                    </List.Content>
-                  </List.Item>
-                )) : emptyList}
-              </List>
-            </Segment>
-          </Grid.Column>
-          <Grid.Column>
-            <Segment>
-              <Header color='red' as="h4" icon block textAlign="center">
-                <Icon name="heart" circular />
-                <Header.Content>{t("Favorite List")}</Header.Content>
-              </Header>
-              <List celled animated verticalAlign='middle'>
-                {favList.length !== 0 ? favList.map((book) => (
-                  <List.Item>
-                    <Image avatar src={bookPicture} />
-                    <List.Content  as={Link} to={"/books/view/" + book.isbn}>
-                      <List.Header>{book.title}</List.Header>
-                    </List.Content>
-                    <List.Content floated='right'>
-                      <Button onClick={() => removeFromFavList(book.id)} size="mini" icon="delete" color="orange">{t("Remove")}</Button>
-                    </List.Content>
-                  </List.Item>
-                )) : emptyList}
-              </List>
-            </Segment>
-          </Grid.Column>
-        </Grid>
-      }
-  </div>
+      <div>
+        <Card fluid>
+          <Image src={userImage} size="medium" centered />
+          <Card.Content>
+            <Card.Header>{user.name}</Card.Header>
+            <Card.Meta>
+              <span className="date">{t("Info")}</span>
+            </Card.Meta>
+            <Card.Description>
+              {t("Additional info")}
+            </Card.Description>
+          </Card.Content>
+          <Card.Content extra>
+            <a>
+              <Icon name="book" />
+              {t("Number of books read: ")}{readList.length}
+            </a>
+          </Card.Content>
+          {editable &&
+            <div>
+              <Link to={`/users/edit/${user.username}`}>
+                <Button color="yellow">
+                  <Icon name="edit">
+                  </Icon>{t("Edit User")}
+                </Button>
+              </Link>
+              {isAdmin &&
+                <Button color="yellow" onClick={deleteUser}>
+                  <Icon name="trash">
+                  </Icon>{t("Delete User")}
+                </Button>}
+            </div>
+          }
+        </Card>
+        {
+          isAdmin && editable &&
+          <Grid stackable columns={2}>
+            <Grid.Column>
+              <Segment>
+                <Header color="green" as="h4" icon block textAlign="center">
+                  <Icon name="book" circular />
+                  <Header.Content>{t("Reading List")}</Header.Content>
+                </Header>
+                <List celled animated verticalAlign="middle">
+                  {readList.length !== 0 ? readList.map((book) => (
+                    <List.Item>
+                      <Image avatar src={bookPicture} />
+                      <List.Content as={Link} to={"/books/view/" + book.isbn}>
+                        <List.Header>{book.title}</List.Header>
+                      </List.Content>
+                      <List.Content floated="right">
+                        <Button onClick={() => removeFromReadingList(book.id)} size="mini" icon="delete"
+                                color="orange">Remove</Button>
+                      </List.Content>
+                    </List.Item>
+                  )) : emptyList}
+                </List>
+              </Segment>
+            </Grid.Column>
+            <Grid.Column>
+              <Segment>
+                <Header color="red" as="h4" icon block textAlign="center">
+                  <Icon name="heart" circular />
+                  <Header.Content>{t("Favorite List")}</Header.Content>
+                </Header>
+                <List celled animated verticalAlign="middle">
+                  {favList.length !== 0 ? favList.map((book) => (
+                    <List.Item>
+                      <Image avatar src={bookPicture} />
+                      <List.Content as={Link} to={"/books/view/" + book.isbn}>
+                        <List.Header>{book.title}</List.Header>
+                      </List.Content>
+                      <List.Content floated="right">
+                        <Button onClick={() => removeFromFavList(book.id)} size="mini" icon="delete"
+                                color="orange">{t("Remove")}</Button>
+                      </List.Content>
+                    </List.Item>
+                  )) : emptyList}
+                </List>
+              </Segment>
+            </Grid.Column>
+          </Grid>
+        }
+      </div>
       : loadFail
   );
 };

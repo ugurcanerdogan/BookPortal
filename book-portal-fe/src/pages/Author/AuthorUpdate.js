@@ -32,12 +32,12 @@ export const AuthorUpdate = (props) => {
     const { history } = props;
     const { push } = history;
 
-    try{
+    try {
       const response = await authorService.updateAuthor(author.id, values);
       setAuthor(response);
       toast.success(t("Author updated!"), { autoClose: 500 });
       push("/authors");
-    }catch (apiError){
+    } catch (apiError) {
       toast.error(t("Update failed..."), { autoClose: 750 });
     }
   };

@@ -35,7 +35,7 @@ export default class UserService {
   };
 
   addBookToReadList = (userId, bookId) => {
-    return axios.post(`http://localhost:8080/api/v1/users/add-book-to-read-list?userId=${userId}&bookId=${bookId}`)
+    return axios.post(`http://localhost:8080/api/v1/users/add-book-to-read-list?userId=${userId}&bookId=${bookId}`);
   };
 
   addBookToFavList = (userId, bookId) => {
@@ -43,7 +43,7 @@ export default class UserService {
   };
 
   removeBookFromReadList = (userId, bookId) => {
-    return axios.delete(`http://localhost:8080/api/v1/users/remove-book-from-read-list?userId=${userId}&bookId=${bookId}`)
+    return axios.delete(`http://localhost:8080/api/v1/users/remove-book-from-read-list?userId=${userId}&bookId=${bookId}`);
   };
 
   removeBookFromFavList = (userId, bookId) => {
