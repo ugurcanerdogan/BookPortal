@@ -6,20 +6,12 @@ export default class UserService {
     return axios.get(`http://localhost:8080/api/v1/users/by-username?username=${username}`);
   };
 
-  getUser = (userId) => {
-    return axios.get(`http://localhost:8080/api/v1/users/${userId}`);
-  };
-
-  getUsers = () => {
-    return axios.get("http://localhost:8080/api/v1/users/");
-  };
-
   getUsersWithPagination = (username, pageNumber = 0, pageSize = 4) => {
     return axios.get(`http://localhost:8080/api/v1/users/with-jpa-pagination?pageNumber=${pageNumber}&pageSize=${pageSize}&currentUser=${username}`);
   };
 
-  getUsersWithName = (containsName, username, pageNumber = 0, pageSize = 4) => {
-    return axios.get(`http://localhost:8080/api/v1/users/with-jpa-pagination?pageNumber=${pageNumber}&pageSize=${pageSize}&currentUser=${username}`);
+  getUsersWithName = (value) => {
+    return axios.get(`http://localhost:8080/api/v1/users/all-by-contains-name?name=${value}`);
   };
 
   updateUser = (userId, body) => {

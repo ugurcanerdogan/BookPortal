@@ -91,7 +91,8 @@ i18n.use(initReactI18next).init({
         "Number of books read: ": "Number of books read: ",
         "Remove": "Remove",
         "Reading List": "Reading List",
-        "Favorite List": "Favorite List"
+        "Favorite List": "Favorite List",
+        "No result found": "No result found"
       }
     },
     tr: {
@@ -182,7 +183,8 @@ i18n.use(initReactI18next).init({
         "Number of books read: ": "Okunan kitap sayısı: ",
         "Remove": "Kaldır",
         "Reading List": "Okuduklarım",
-        "Favorite List": "Favorilerim"
+        "Favorite List": "Favorilerim",
+        "No result found": "Sonuç bulunamadı..."
       }
     }
   },

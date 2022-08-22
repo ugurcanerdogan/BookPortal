@@ -102,8 +102,8 @@ const UserList = () => {
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {allUsers.map((user) => (
-              <Table.Row>
+            {allUsers.map((user, index) => (
+              <Table.Row key={index}>
                 <Table.Cell>
                   <Link to={`/users/view/${user.username}`}>
                     <Image centered size="mini" src={defaultPicture}></Image>

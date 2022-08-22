@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Button, Card, Dimmer, Icon, Image, Loader, Message, Segment } from "semantic-ui-react";
+import { Button, Card, Dimmer, Image, Loader, Message, Segment } from "semantic-ui-react";
 import UserService from "../../services/UserService";
 import BookService from "../../services/BookService";
 import bookPicture from "../../assets/bookImage.png";
@@ -92,26 +92,16 @@ const BookDetail = (props) => {
             </Card.Content>
             <Card.Content extra>
               <div className="ui two buttons">
-                <Button onClick={() => addToReadList()} basic color="green">
-                  <Icon name="book" /> {t("Add to Read List")}
-                </Button>
-                <Button onClick={() => addToFavList()} basic color="red">
-                  <Icon name="heart" /> {t("Add to Fav List")}
-                </Button>
+                <Button icon="book" onClick={() => addToReadList()} content={t("Add to Read List")} color="green" />
+                <Button icon="heart" onClick={() => addToFavList()} content={t("Add to Fav List")} color="red" />
               </div>
             </Card.Content>
             {editable &&
               <div>
                 <Link to={`/books/edit/${book.isbn}`}>
-                  <Button color="purple">
-                    <Icon name="edit">
-                    </Icon>{t("Edit Book")}
-                  </Button>
+                  <Button icon="edit" content={t("Edit Book")} color="purple" />
                 </Link>
-                <Button color="purple" onClick={deleteBook}>
-                  <Icon name="trash">
-                  </Icon>{t("Delete Book")}
-                </Button>
+                <Button icon="trash" onClick={deleteBook} content={t("Delete Book")} color="purple" />
               </div>
             }
           </Card>

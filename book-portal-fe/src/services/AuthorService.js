@@ -6,12 +6,12 @@ export default class AuthorService {
     return axios.get(`http://localhost:8080/api/v1/authors/by-author-name?authorName=${authorName}`);
   };
 
-  getAuthors = () => {
-    return axios.get("http://localhost:8080/api/v1/authors");
-  };
-
   getAuthorsWithPagination = (pageNumber = 0, pageSize = 4) => {
     return axios.get(`http://localhost:8080/api/v1/authors/with-jpa-pagination?pageNumber=${pageNumber}&pageSize=${pageSize}`);
+  };
+
+  getAuthorsWithName = (value) => {
+    return axios.get(`http://localhost:8080/api/v1/authors/all-by-contains-name?authorName=${value}`);
   };
 
   updateAuthor = (bookId, body) => {

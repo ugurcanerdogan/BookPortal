@@ -59,7 +59,7 @@ const UserDetail = (props) => {
 
   let loadFail = (
     <Message negative>
-      <Message.Header>{t("We couldn't load the books...")}</Message.Header>
+      <Message.Header>{t("We couldn't load the user...")}</Message.Header>
       <p>{t("Error occurred...")}</p>
     </Message>
   );
@@ -106,16 +106,9 @@ const UserDetail = (props) => {
           {editable &&
             <div>
               <Link to={`/users/edit/${user.username}`}>
-                <Button color="yellow">
-                  <Icon name="edit">
-                  </Icon>{t("Edit User")}
-                </Button>
+                <Button icon="edit" content={t("Edit User")} color="yellow" />
               </Link>
-              {isAdmin &&
-                <Button color="yellow" onClick={deleteUser}>
-                  <Icon name="trash">
-                  </Icon>{t("Delete User")}
-                </Button>}
+              {isAdmin && <Button icon="trash" onClick={deleteUser} content={t("Delete User")} color="yellow" />}
             </div>
           }
         </Card>
@@ -129,8 +122,8 @@ const UserDetail = (props) => {
                   <Header.Content>{t("Reading List")}</Header.Content>
                 </Header>
                 <List celled animated verticalAlign="middle">
-                  {readList.length !== 0 ? readList.map((book) => (
-                    <List.Item>
+                  {readList.length !== 0 ? readList.map((book, index) => (
+                    <List.Item key={index}>
                       <Image avatar src={bookPicture} />
                       <List.Content as={Link} to={"/books/view/" + book.isbn}>
                         <List.Header>{book.title}</List.Header>
@@ -151,8 +144,8 @@ const UserDetail = (props) => {
                   <Header.Content>{t("Favorite List")}</Header.Content>
                 </Header>
                 <List celled animated verticalAlign="middle">
-                  {favList.length !== 0 ? favList.map((book) => (
-                    <List.Item>
+                  {favList.length !== 0 ? favList.map((book, index) => (
+                    <List.Item key={index}>
                       <Image avatar src={bookPicture} />
                       <List.Content as={Link} to={"/books/view/" + book.isbn}>
                         <List.Header>{book.title}</List.Header>

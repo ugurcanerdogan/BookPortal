@@ -98,8 +98,8 @@ const BookList = () => {
     !loadFailure ?
       <div>
         <Card.Group itemsPerRow={3}>
-          {allBooks.map((book) => (
-            <Card>
+          {allBooks.map((book, index) => (
+            <Card key={index}>
               <Card.Content as={Link} to={"/books/view/" + book.isbn}>
                 <Image
                   floated="right"
