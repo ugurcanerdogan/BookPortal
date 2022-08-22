@@ -3,7 +3,9 @@ package com.uqi.bookportal.service;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import com.uqi.bookportal.model.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -137,6 +139,21 @@ public class BookService {
 		var book = this.findById(id);
 		book.setActive(!book.isActive());
 		return bookRepository.save(book);
+	}
+
+	public Set<User> getUsersWhoAddedToReadingList(long id) {
+		var bookOpt = bookRepository.findById(id);
+		return bookOpt.get().getUsersThatAddedThisReadingList(); // unchecked
+	}
+
+	public Set<User> getUsersWhoAddedToFavList(long id) {
+		var bookOpt = bookRepository.findById(id);
+		return bookOpt.get().getUsersThatAddedThisFavoriteList(); // unchecked
+	}
+
+	public Set<Author> getAuthorsOfBook(long id) {
+		var bookOpt = bookRepository.findById(id);
+		return bookOpt.get().getAuthors(); // unchecked
 	}
 
 }
