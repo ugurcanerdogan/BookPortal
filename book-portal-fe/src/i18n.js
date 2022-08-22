@@ -87,12 +87,17 @@ i18n.use(initReactI18next).init({
         "We couldn't load the user...": "We couldn't load the user...",
         "We couldn't load the author...": "We couldn't load the author...",
         "The list is empty.": "The list is empty.",
+        "Poke users to add this book to the list!": "Poke users to add this book to the list!",
         "You can add books to your lists from book menu!": "You can add books to your lists from book menu!",
         "Number of books read: ": "Number of books read: ",
         "Remove": "Remove",
         "Reading List": "Reading List",
         "Favorite List": "Favorite List",
-        "No result found": "No result found"
+        "No result found": "No result found",
+        "Users added to Reading List": "Users added to Reading List",
+        "Users added to Favorite List": "Users added to Favorite List",
+        "This author has no books?": "This author has no books?",
+        "Author's Books": "Author's Books"
       }
     },
     tr: {
@@ -179,12 +184,17 @@ i18n.use(initReactI18next).init({
         "We couldn't load the user...": "Kullanıcı yüklenemedi...",
         "We couldn't load the author...": "Yazar yüklenemedi...",
         "The list is empty.": "Bu liste boş.",
+        "Poke users to add this book to the list!": "İnsanları, bu kitabı listelerine eklemesi için dürt!",
         "You can add books to your lists from book menu!": "Kitaplar sayfasından bu listeye kitap ekleyebilirsiniz!",
         "Number of books read: ": "Okunan kitap sayısı: ",
         "Remove": "Kaldır",
-        "Reading List": "Okuduklarım",
+        "Reading List": "Okunanlar Listesi",
         "Favorite List": "Favorilerim",
-        "No result found": "Sonuç bulunamadı..."
+        "No result found": "Sonuç bulunamadı...",
+        "Users added to Reading List": "Okunanlar Listesine Ekleyen Kullanıcılar",
+        "Users added to Favorite List": "Favoriler Listesine Ekleyen Kullanıcılar",
+        "This author has no books?": "Bu yazarın kitabı yok :D?",
+        "Author's Books": "Yazarın Kitapları"
       }
     }
   },
