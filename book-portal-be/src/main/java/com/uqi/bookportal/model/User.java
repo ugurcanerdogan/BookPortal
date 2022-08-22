@@ -63,10 +63,10 @@ public class User extends EntityBase {
 	}
 
 	public void addToFavoriteList(Book book) {
-		if(this.favoriteList.contains(book)){
+		if (this.favoriteList.contains(book)) {
 			throw new IllegalStateException("Book is already in the favorite list...");
 		}
-		else{
+		else {
 			this.favoriteList.add(book);
 			book.getUsersThatAddedThisFavoriteList().add(this);
 		}
@@ -82,10 +82,10 @@ public class User extends EntityBase {
 	}
 
 	public void addToReadingList(Book book) {
-		if(this.readList.contains(book)){
+		if (this.readList.contains(book)) {
 			throw new IllegalStateException("Book is already in the reading list...");
 		}
-		else{
+		else {
 			this.readList.add(book);
 			book.getUsersThatAddedThisReadingList().add(this);
 		}

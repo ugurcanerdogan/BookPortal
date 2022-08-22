@@ -56,6 +56,13 @@ public class AuthorController {
 		return ResponseEntity.ok(authorService.findByName(authorName));
 	}
 
+	@GetMapping("/all-by-contains-name")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
+	public ResponseEntity<List<Author>> searchAuthorsByContainingName(
+			@RequestParam(name = "authorName") String authorName) {
+		return ResponseEntity.ok(authorService.findByNameContaining(authorName));
+	}
+
 	@GetMapping("/with-jpa-pagination")
 	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
 	public ResponseEntity<Page<Author>> getAuthorsWithJpaPagination(

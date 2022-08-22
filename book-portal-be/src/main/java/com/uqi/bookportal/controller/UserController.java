@@ -84,7 +84,7 @@ public class UserController {
 		return ResponseEntity.ok(userService.findAllByUsername(username));
 	}
 
-	@GetMapping("/all-by-name")
+	@GetMapping("/all-by-contains-name")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<List<User>> searchUsersByName(@RequestParam(name = "name") String name) {
 		return ResponseEntity.ok(userService.findAllByName(name));
@@ -118,7 +118,9 @@ public class UserController {
 	}
 
 	@PutMapping("/{userId}")
-	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")// currentUser alınırsa role_admin olarak değişecek
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')") // currentUser alınırsa
+																	// role_admin olarak
+																	// değişecek
 	public ResponseEntity<User> updateUser(@Valid @PathVariable(name = "userId") long id,
 			@Valid @RequestBody UserUpdateDTO userUpdateDTO) {
 		return ResponseEntity.ok(userService.update(id, userUpdateDTO));
