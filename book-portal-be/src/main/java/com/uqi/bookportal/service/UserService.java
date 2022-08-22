@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.uqi.bookportal.config.EmailValidator;
+import com.uqi.bookportal.model.Book;
 import com.uqi.bookportal.model.dto.RegistrationRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -145,6 +146,16 @@ public class UserService implements UserDetailsService {
 		var user = this.findById(id);
 		user.setActive(!user.isActive());
 		return userRepository.save(user);
+	}
+
+	public Set<Book> getUsersReadingList(long id) {
+		var userOpt = userRepository.findById(id);
+		return userOpt.get().getReadList(); // unchecked
+	}
+
+	public Set<Book> getUsersFavoriteList(long id) {
+		var userOpt = userRepository.findById(id);
+		return userOpt.get().getFavoriteList(); // unchecked
 	}
 
 	@Override
