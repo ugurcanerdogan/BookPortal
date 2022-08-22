@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Button, Card, Dimmer, Icon, Image, Loader, Message, Segment } from "semantic-ui-react";
+import { Button, Card, Dimmer, Image, Loader, Message, Segment } from "semantic-ui-react";
 import AuthorService from "../../services/AuthorService";
 import authorImage from "../../assets/authorImage.png";
 import { useSelector } from "react-redux";
@@ -72,15 +72,9 @@ const AuthorDetail = (props) => {
           {editable &&
             <div>
               <Link to={`/authors/edit/${author.name}`}>
-                <Button color="yellow">
-                  <Icon name="edit">
-                  </Icon>{t("Edit Author")}
-                </Button>
+                <Button icon="edit" content={t("Edit Author")} color="purple" />
               </Link>
-              <Button color="yellow" onClick={deleteAuthor}>
-                <Icon name="trash">
-                </Icon>{t("Delete Author")}
-              </Button>
+              <Button icon="trash" onClick={deleteAuthor} content={t("Delete Author")} color="purple" />
             </div>
           }
         </Card>

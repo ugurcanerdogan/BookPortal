@@ -89,8 +89,8 @@ const AuthorList = () => {
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {allAuthors.map((author) => (
-              <Table.Row>
+            {allAuthors.map((author, index) => (
+              <Table.Row key={index}>
                 <Table.Cell>
                   <Link to={`/authors/view/${author.name}`}>
                     <Image centered size="mini" src={defaultPicture}></Image>
