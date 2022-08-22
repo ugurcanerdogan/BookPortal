@@ -13,6 +13,8 @@ import com.uqi.bookportal.model.Author;
 
 public interface AuthorRepository extends JpaRepository<Author, Long> {
 
+	List<Author> findByNameContaining(String name);
+
 	Optional<Author> findByName(String name);
 
 	Optional<Author> findByEmail(String email);

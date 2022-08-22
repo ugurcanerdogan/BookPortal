@@ -72,6 +72,10 @@ public class AuthorService {
 		});
 	}
 
+	public List<Author> findByNameContaining(String name) {
+		return authorRepository.findByNameContaining(name);
+	}
+
 	public Page<Author> findAllWithJpaPagination(int pageNumber, int pageSize) {
 		var paged = PageRequest.of(pageNumber, pageSize);
 		return authorRepository.findAllByActiveTrue(paged);
