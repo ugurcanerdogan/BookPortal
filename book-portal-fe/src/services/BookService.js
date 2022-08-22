@@ -25,4 +25,16 @@ export default class BookService {
   deleteBook = (id) => {
     return axios.delete(`http://localhost:8080/api/v1/books/${id}`);
   };
+
+  getUsersAddedToReadList = (id) => {
+    return axios.get(`http://localhost:8080/api/v1/books/${id}/getUsersAddedThisToReadingList`);
+  };
+
+  getUsersAddedToFavList = (id) => {
+    return axios.get(`http://localhost:8080/api/v1/books/${id}/getUsersAddedThisToFavoriteList`);
+  };
+
+  getAuthorOfBook = (id) => {
+    return axios.get(`http://localhost:8080/api/v1/books/${id}/getAuthors`);
+  };
 }

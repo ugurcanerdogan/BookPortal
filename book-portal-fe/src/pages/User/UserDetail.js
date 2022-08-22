@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import { Button, Card, Dimmer, Grid, Header, Icon, Image, List, Loader, Message, Segment } from "semantic-ui-react";
 import UserService from "../../services/UserService";
 import userImage from "../../assets/userImage.png";
@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import { useApiProgress } from "../../utilities/apiProgress";
 
-const UserDetail = (props) => {
+const UserDetail = () => {
 
   const { t } = useTranslation();
   const { isAdmin, sub: loggedInUsername } = useSelector(state => state.auth);
@@ -19,10 +19,9 @@ const UserDetail = (props) => {
   const [editable, setEditable] = useState(false);
   const [loadFailure, setLoadFailure] = useState(false);
   const userService = new UserService();
-  const { history } = props;
-  const { push } = history;
   const { username } = useParams();
   const pendingApiCall = useApiProgress("get", "http://localhost:8080/api/v1/users/by-username?username=");
+  const { push } = useHistory();
 
   useEffect(() => {
     setLoadFailure(false);
@@ -40,21 +39,23 @@ const UserDetail = (props) => {
   const deleteUser = () => {
     userService.deleteUser(user.id).then(() => setUser({}));
     toast.success(t("User deleted!"), { autoClose: 500 });
-    // push(`/users/view/${user.username}`)
     push("/users");
   };
 
   const removeFromReadingList = async (bookId) => {
     await userService.removeBookFromReadList(user.id, bookId);
     toast.success(t("Book removed from reading list!"), { autoClose: 500 });
-    // push(`/users/view/${user.username}`)
-    push("/users");
+    userService.getUserByUsername(username).then(user => {
+      setReadList(user.data.readList);
+    });
   };
 
   const removeFromFavList = async (bookId) => {
     await userService.removeBookFromFavList(user.id, bookId);
     toast.success(t("Book removed from favorite list!"), { autoClose: 500 });
-    push("/users");
+    userService.getUserByUsername(username).then(user => {
+      setFavList(user.data.favoriteList);
+    });
   };
 
   let loadFail = (
@@ -98,10 +99,10 @@ const UserDetail = (props) => {
             </Card.Description>
           </Card.Content>
           <Card.Content extra>
-            <a>
+            <span>
               <Icon name="book" />
               {t("Number of books read: ")}{readList.length}
-            </a>
+            </span>
           </Card.Content>
           {editable &&
             <div>
@@ -113,7 +114,6 @@ const UserDetail = (props) => {
           }
         </Card>
         {
-          isAdmin && editable &&
           <Grid stackable columns={2}>
             <Grid.Column>
               <Segment>
@@ -128,10 +128,13 @@ const UserDetail = (props) => {
                       <List.Content as={Link} to={"/books/view/" + book.isbn}>
                         <List.Header>{book.title}</List.Header>
                       </List.Content>
-                      <List.Content floated="right">
-                        <Button onClick={() => removeFromReadingList(book.id)} size="mini" icon="delete"
-                                color="orange">Remove</Button>
-                      </List.Content>
+                      {
+                        (isAdmin || editable) &&
+                        <List.Content floated="right">
+                          <Button onClick={() => removeFromReadingList(book.id)} size="mini" icon="delete"
+                                  color="orange" content={t("Remove")} />
+                        </List.Content>
+                      }
                     </List.Item>
                   )) : emptyList}
                 </List>
@@ -150,10 +153,13 @@ const UserDetail = (props) => {
                       <List.Content as={Link} to={"/books/view/" + book.isbn}>
                         <List.Header>{book.title}</List.Header>
                       </List.Content>
-                      <List.Content floated="right">
-                        <Button onClick={() => removeFromFavList(book.id)} size="mini" icon="delete"
-                                color="orange">{t("Remove")}</Button>
-                      </List.Content>
+                      {
+                        (isAdmin || editable) &&
+                        <List.Content floated="right">
+                          <Button onClick={() => removeFromFavList(book.id)} size="mini" icon="delete"
+                                  color="orange" content={t("Remove")} />
+                        </List.Content>
+                      }
                     </List.Item>
                   )) : emptyList}
                 </List>
