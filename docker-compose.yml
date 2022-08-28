@@ -3,13 +3,15 @@ services:
   book-portal-be:
     image: ugurcanerdogan/book-portal-be
     container_name: "book-portal-be"
-    ports:
-      - "8080:8080"
 
   book-portal-fe:
     image: ugurcanerdogan/book-portal-fe
-    container_name: "book-bortal-fe"
+    container_name: "book-portal-fe"
     depends_on:
       - book-portal-be
+  proxy:
+    image: ugurcanerdogan/book-portal-proxy
+    container_name: "book-portal-proxy"
+    restart: always
     ports:
       - "80:80"
