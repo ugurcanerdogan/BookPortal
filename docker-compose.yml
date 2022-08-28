@@ -1,0 +1,15 @@
+version: "3"
+services:
+  book-portal-be:
+    image: ugurcanerdogan/book-portal-be
+    container_name: "book-portal-be"
+    ports:
+      - "8080:8080"
+
+  book-portal-fe:
+    image: ugurcanerdogan/book-portal-fe
+    container_name: "book-bortal-fe"
+    depends_on:
+      - book-portal-be
+    ports:
+      - "80:80"
