@@ -64,7 +64,7 @@ export const BookUpdate = (props) => {
             }}>
       <Form className="ui form">
         <UqiTextInput name="title" placeholder={t("Book Title")}></UqiTextInput>
-        <UqiTextInput name="year" placeholder={t("Published Year")}></UqiTextInput>
+        <UqiTextInput name="year" placeholder={t("Publish Year")}></UqiTextInput>
         <UqiTextInput name="publisher" placeholder={t("Publisher Name")}></UqiTextInput>
         <Button color="yellow" type="submit">{t("Update")}</Button>
       </Form>
