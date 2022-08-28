@@ -20,7 +20,7 @@ const UserDetail = () => {
   const [loadFailure, setLoadFailure] = useState(false);
   const userService = new UserService();
   const { username } = useParams();
-  const pendingApiCall = useApiProgress("get", "http://localhost:8080/api/v1/users/by-username?username=");
+  const pendingApiCall = useApiProgress("get", "/api/v1/users/by-username?username=");
   const { push } = useHistory();
 
   useEffect(() => {

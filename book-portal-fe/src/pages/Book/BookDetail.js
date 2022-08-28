@@ -27,7 +27,7 @@ const BookDetail = (props) => {
   let { isbn } = useParams();
   let authorNames = "";
 
-  const pendingApiCall = useApiProgress("get", "http://localhost:8080/api/v1/books/by-isbn?isbn=");
+  const pendingApiCall = useApiProgress("get", "/api/v1/books/by-isbn?isbn=");
 
   useEffect(() => {
     setLoadFailure(false);
@@ -75,18 +75,18 @@ const BookDetail = (props) => {
   const addToReadList = async () => {
     try {
       await userService.addBookToReadList(id, book.id);
-      toast.success("Book is added to your reading list!");
+      toast.success(t("Book is added to your reading list!"));
     } catch (e) {
-      toast.error("Book is already in your reading list!");
+      toast.error(t("Book is already in your reading list!"));
     }
   };
 
   const addToFavList = async () => {
     try {
       await userService.addBookToFavList(id, book.id);
-      toast.success("Book is added to your favorite list!");
+      toast.success(t("Book is added to your favorite list!"));
     } catch (e) {
-      toast.error("Book is already in your favorite list!");
+      toast.error(t("Book is already in your favorite list!"));
     }
   };
 

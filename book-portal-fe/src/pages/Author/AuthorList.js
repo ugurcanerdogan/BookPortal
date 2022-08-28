@@ -14,7 +14,7 @@ const AuthorList = () => {
   });
   const { content: allAuthors, last, first } = page;
   const [loadFailure, setLoadFailure] = useState(false);
-  const pendingApiCall = useApiProgress("get", "http://localhost:8080/api/v1/authors/with-jpa-pagination?pageNumber");
+  const pendingApiCall = useApiProgress("get", "/api/v1/authors/with-jpa-pagination?pageNumber");
 
   useEffect(() => {
     loadAuthors();

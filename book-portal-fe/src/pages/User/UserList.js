@@ -16,7 +16,7 @@ const UserList = () => {
   });
   const { content: allUsers, last, first } = page;
   const [loadFailure, setLoadFailure] = useState(false);
-  const pendingApiCall = useApiProgress("get", "http://localhost:8080/api/v1/users/with-jpa-pagination?pageNumber");
+  const pendingApiCall = useApiProgress("get", "/api/v1/users/with-jpa-pagination?pageNumber");
   const { searchItem } = useParams();
 
   useEffect(() => {
