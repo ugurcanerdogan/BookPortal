@@ -19,7 +19,6 @@ import com.uqi.bookportal.service.UserService;
 
 @RestController
 @RequestMapping("/api/v1/users")
-@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
 public class UserController {
 
 	private final UserService userService;
@@ -29,24 +28,28 @@ public class UserController {
 	}
 
 	@PostMapping("/add-book-to-favorite-list")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
 	public ResponseEntity<User> addBookToFavoriteList(@RequestParam(name = "userId") long userId,
 			@RequestParam(name = "bookId") long bookId) {
 		return ResponseEntity.ok(userService.addBookToFavoriteList(userId, bookId));
 	}
 
 	@PostMapping("/add-book-to-read-list")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
 	public ResponseEntity<User> addBookToReadList(@RequestParam(name = "userId") long userId,
 			@RequestParam(name = "bookId") long bookId) {
 		return ResponseEntity.ok(userService.addBookToReadingList(userId, bookId));
 	}
 
 	@DeleteMapping("/remove-book-from-favorite-list")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
 	public ResponseEntity<User> removeBookFromFavoriteList(@RequestParam(name = "userId") long userId,
 			@RequestParam(name = "bookId") long bookId) {
 		return ResponseEntity.ok(userService.removeBookFromFavoriteList(userId, bookId));
 	}
 
 	@DeleteMapping("/remove-book-from-read-list")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
 	public ResponseEntity<User> removeBookFromReadList(@RequestParam(name = "userId") long userId,
 			@RequestParam(name = "bookId") long bookId) {
 		return ResponseEntity.ok(userService.removeBookFromReadingList(userId, bookId));
@@ -60,11 +63,13 @@ public class UserController {
 	}
 
 	@GetMapping("")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
 	public ResponseEntity<List<User>> getUsers() {
 		return ResponseEntity.ok(userService.findAll());
 	}
 
 	@GetMapping("/by-username")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
 	public ResponseEntity<User> searchUserByUsername(@RequestParam(name = "username") String username) {
 		return ResponseEntity.ok(userService.findByUsername(username));
 	}
@@ -82,12 +87,13 @@ public class UserController {
 	}
 
 	@GetMapping("/all-by-contains-name")
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
 	public ResponseEntity<List<User>> searchUsersByName(@RequestParam(name = "name") String name) {
 		return ResponseEntity.ok(userService.findAllByName(name));
 	}
 
 	@GetMapping("/with-jpa-pagination")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
 	public ResponseEntity<Page<User>> getUsersWithJpaPagination(
 			@RequestParam(name = "pageNumber", defaultValue = "1") int pageNumber,
 			@RequestParam(name = "pageSize", defaultValue = "5") int pageSize,
@@ -123,11 +129,13 @@ public class UserController {
 	}
 
 	@GetMapping("/{userId}/getReadList")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
 	public ResponseEntity<Set<Book>> getReadingList(@PathVariable(name = "userId") long id) {
 		return ResponseEntity.ok(userService.getUsersReadingList(id));
 	}
 
 	@GetMapping("/{userId}/getFavList")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
 	public ResponseEntity<Set<Book>> getFavoriteList(@PathVariable(name = "userId") long id) {
 		return ResponseEntity.ok(userService.getUsersFavoriteList(id));
 	}
@@ -138,7 +146,6 @@ public class UserController {
 		return ResponseEntity.ok(userService.remove(id));
 	}
 
-	@PreAuthorize("permitAll()")
 	@PostMapping("/registration")
 	public ResponseEntity<User> register(@RequestBody RegistrationRequest request) {
 		return ResponseEntity.ok(userService.register(request));
