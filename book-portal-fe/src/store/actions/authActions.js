@@ -20,7 +20,7 @@ export const loginHandler = (credentials) => {
 
     const response = await authService.login(credentials);
     const token = response.data.access_token;
-    const isBanned = response.data.is_banned;
+    const isBanned = response.data.banned;
     const name = response.data.name;
     const id = response.data.id;
 

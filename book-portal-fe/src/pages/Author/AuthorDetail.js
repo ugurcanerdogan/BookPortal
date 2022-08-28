@@ -21,7 +21,7 @@ const AuthorDetail = (props) => {
   const { history } = props;
   const { push } = history;
   const { name } = useParams();
-  const pendingApiCall = useApiProgress("get", "http://localhost:8080/api/v1/authors/by-author-name?authorName=");
+  const pendingApiCall = useApiProgress("get", "/api/v1/authors/by-author-name?authorName=");
 
   useEffect(() => {
     setLoadFailure(false);

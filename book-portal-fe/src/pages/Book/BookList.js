@@ -8,6 +8,7 @@ import { useApiProgress } from "../../utilities/apiProgress";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import { bool } from "yup";
 
 const BookList = () => {
 
@@ -20,7 +21,36 @@ const BookList = () => {
   });
   const { content: allBooks, last, first } = page;
   const [loadFailure, setLoadFailure] = useState(false);
-  const pendingApiCall = useApiProgress("get", "http://localhost:8080/api/v1/books/with-jpa-pagination?pageNumber");
+  const pendingApiCall1 = useApiProgress("get", "/api/v1/books/with-jpa-pagination?pageNumber");
+  const pendingApiCall2 = useApiProgress("get", "/api/v1/books/");
+  const pendingApiCall = pendingApiCall1 || pendingApiCall2;
+  const [authorName, setAuthorName] = useState({});
+  const [loadBooksDone, setLoadBooksDone] = useState(false);
+
+  // WARNING! Highly dangerous code below! :D
+  const authorNameHandler = async () => {
+    let authorNames = "";
+    let authors;
+    let newAuthorNameObject = {};
+    for (const book of allBooks) {
+      let response = await bookService.getAuthorOfBook(book.id);
+      authors = response.data;
+      if (authors.length === 1) {
+        authorNames = authors[0].name;
+      } else {
+        authors.map(author => {
+          authorNames += author.name + ", ";
+        });
+        authorNames = authorNames.substring(0, authorNames.length - 2);
+      }
+      newAuthorNameObject[book.title] = authorNames;
+    }
+    setAuthorName(newAuthorNameObject);
+  };
+
+  useEffect(() => {
+    authorNameHandler();
+  }, [loadBooksDone]);
 
   useEffect(() => {
     loadBooks();
@@ -55,9 +85,12 @@ const BookList = () => {
   };
 
   const loadBooks = (pageNumber, pageSize) => {
+    setLoadBooksDone(false);
     setLoadFailure(false);
     bookService.getBooksWithPagination(pageNumber, pageSize).then(response => {
       setPage(response.data);
+      setLoadBooksDone(true);
+
     }).catch(error => {
       setLoadFailure(true);
     });
@@ -109,7 +142,7 @@ const BookList = () => {
                 <Card.Header>{book.title}</Card.Header>
                 <Card.Meta>{book.year}</Card.Meta>
                 <Card.Description>
-                  {book.publisher}
+                  {authorName[book.title]}
                 </Card.Description>
               </Card.Content>
               <Card.Content extra>

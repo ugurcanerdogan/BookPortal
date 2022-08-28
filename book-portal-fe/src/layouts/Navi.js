@@ -9,7 +9,7 @@ import SignedOut from "../layouts/SignedOut";
 import SignedIn from "../layouts/SignedIn";
 import SearchBar from "../layouts/SearchBar";
 
-const Navi = (props) => {
+const Navi = () => {
 
   const { isLoggedIn, isAdmin } = useSelector(state => state.auth);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -59,7 +59,7 @@ const Navi = (props) => {
     <Menu fixed="top">
       <Container>
         <Image size="tiny" src={portalLogo} />
-        <SearchBar />
+        {isLoggedIn && <SearchBar />}
         <Menu.Menu position="right">
           {isAdmin && panel}
           <Dropdown item text={t("Language")}>

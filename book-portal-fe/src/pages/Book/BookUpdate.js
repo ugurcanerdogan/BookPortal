@@ -17,7 +17,6 @@ export const BookUpdate = (props) => {
   const pathBookIsbn = routeParams.isbn;
   const bookService = new BookService();
 
-  //update book by bookname eklenecek ayrı fonka ve submite
   useEffect(() => {
     bookService.getBookByIsbn(pathBookIsbn).then(book => setBook(book.data));
   }, []);

@@ -12,7 +12,8 @@ const SignedIn = ({ signOut }) => {
   return (
     <div>
       <Menu.Item>
-        <Image avatar spaced="right" src="https://avatars.githubusercontent.com/u/45129020?v=4" />
+        <Image avatar spaced="right"
+               src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png" />
         <Dropdown item pointing="top right" text={name}>
           <Dropdown.Menu>
             <Dropdown.Item as={Link} to={`/users/view/${loggedInUsername}`} text={t("My profile")} icon="info" />

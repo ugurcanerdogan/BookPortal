@@ -17,7 +17,6 @@ export const AuthorUpdate = (props) => {
   const pathAuthorName = routeParams.name;
   const authorService = new AuthorService();
 
-  //update author by authorname eklenecek ayrı fonka ve submite
   useEffect(() => {
     authorService.getAuthorByEmail(pathAuthorName).then(author => setAuthor(author.data));
   }, []);

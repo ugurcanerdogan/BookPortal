@@ -22,7 +22,6 @@ export const UserUpdate = (props) => {
   const userService = new UserService();
   const { sub: loggedInUsername } = useSelector(state => state.auth);
 
-  //update user by username eklenecek ayrı fonka ve submite
   useEffect(() => {
     userService.getUserByUsername(pathUserName).then(user => setUser(user.data));
   }, []);
