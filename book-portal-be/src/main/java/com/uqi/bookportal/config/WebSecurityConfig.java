@@ -1,13 +1,10 @@
 package com.uqi.bookportal.config;
 
-import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
-import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
-
-import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -20,8 +17,9 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.uqi.bookportal.filter.CustomAuthenticationFilter;
-import com.uqi.bookportal.filter.CustomAuthorizationFilter;
+import com.uqi.bookportal.jwt.JwtAuthenticationEntryPoint;
+import com.uqi.bookportal.jwt.JwtFilter;
+import com.uqi.bookportal.jwt.TokenManager;
 import com.uqi.bookportal.repo.UserRepository;
 import com.uqi.bookportal.service.UserService;
 
@@ -30,19 +28,7 @@ import com.uqi.bookportal.service.UserService;
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-	private static final String[] AUTH_WHITELIST = { //
-			"/api/v1/h2-console", //
-			"/api/v1/h2-console/**", //
-			"/api/v1/v2/api-docs", //
-			"/api/v1/swagger-resources", //
-			"/api/v1/swagger-resources/**", //
-			"/api/v1/configuration/ui", //
-			"/api/v1/configuration/security", //
-			"/api/v1/swagger-ui.html", //
-			"/api/v1/webjars/**", //
-			"/api/v1/graphiql", //
-			"/api/v1/api/graphql", //
-	};
+	private final JwtAuthenticationEntryPoint authenticationEntryPoint;
 
 	private final PasswordEncoder encoder;
 
@@ -50,59 +36,46 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private final UserRepository userRepository;
 
-	public WebSecurityConfig(PasswordEncoder encoder, UserService userService, UserRepository userRepository) {
+	private final TokenManager tokenManager;
+
+	public WebSecurityConfig(PasswordEncoder encoder, JwtAuthenticationEntryPoint authenticationEntryPoint,
+			UserService userService, UserRepository userRepository, TokenManager tokenManager) {
 		this.encoder = encoder;
+		this.authenticationEntryPoint = authenticationEntryPoint;
 		this.userService = userService;
 		this.userRepository = userRepository;
+		this.tokenManager = tokenManager;
 	}
-
-	// @Override
-	// protected void configure(AuthenticationManagerBuilder auth) {
-	// auth.authenticationProvider(daoAuthenticationProvider());
-	// }
-	//
-	// @Bean
-	// public DaoAuthenticationProvider daoAuthenticationProvider() {
-	// DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-	// provider.setPasswordEncoder(encoder);
-	// provider.setUserDetailsService(userService);
-	// return provider;
-	// }
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userService).passwordEncoder(encoder);
 	}
 
+	@Bean
+	@Override
+	public AuthenticationManager authenticationManagerBean() throws Exception {
+		return super.authenticationManagerBean();
+	}
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-
-		CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(
-				authenticationManagerBean());
-		customAuthenticationFilter.setFilterProcessesUrl("/api/v1/login");
 		http.csrf().disable().cors().configurationSource(corsConfigurationSource()).and().authorizeRequests()
-				.antMatchers(AUTH_WHITELIST).anonymous()
-				.antMatchers("/api/v1/users/registration/**", "/api/v1/login/**").permitAll().anyRequest()
-				.authenticated().and().exceptionHandling()
-				.accessDeniedHandler((req, resp, ex) -> resp.setStatus(SC_FORBIDDEN))
-				.authenticationEntryPoint((req, resp, ex) -> resp.setStatus(SC_UNAUTHORIZED)).and().sessionManagement()
+				.antMatchers("/api/v1/login").permitAll().antMatchers("/api/v1/users/registration").permitAll()
+				.anyRequest().authenticated().and().exceptionHandling()
+				.authenticationEntryPoint(authenticationEntryPoint).and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-		http.addFilter(customAuthenticationFilter);
-		http.addFilterBefore(new CustomAuthorizationFilter(userRepository), UsernamePasswordAuthenticationFilter.class);
-
-		// http.csrf().disable().authorizeRequests().anyRequest().permitAll();
-		// Works for GET, POST, PUT, DELETE
+		http.addFilterBefore(new JwtFilter(userRepository, tokenManager), UsernamePasswordAuthenticationFilter.class);
 	}
 
 	@Bean
 	CorsConfigurationSource corsConfigurationSource() {
 		final CorsConfiguration configuration = new CorsConfiguration();
-		configuration.setAllowedOrigins(List.of("http://localhost:3000"));
-		configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
-		configuration.setAllowCredentials(true);
+		configuration.setAllowedOrigins(List.of("*"));
+		configuration.setAllowedMethods(List.of("*"));
+		configuration.setAllowCredentials(false);
 		configuration.setAllowedHeaders(List.of("*"));
-		configuration.setExposedHeaders(Arrays.asList("X-Auth-Token", "Authorization", "Access-Control-Allow-Origin",
-				"Access-Control-Allow-Credentials"));
+		configuration.setExposedHeaders(List.of("*"));
 		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", configuration);
 		return source;
