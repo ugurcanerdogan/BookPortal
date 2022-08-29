@@ -27,8 +27,8 @@ jobs:
       - name: Setup Java JDK
         uses: actions/setup-java@v3
         with:
-          java-version: '18'
-          distribution: 'openjdk'
+          java-version: '17'
+          distribution: 'adopt'
           java-package: jdk
 
       # Initializes the CodeQL tools for scanning.
