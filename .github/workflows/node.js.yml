@@ -1,3 +1,6 @@
+env:
+  CI: false
+
 name: Node.js CI
 
 on:
@@ -62,8 +65,8 @@ jobs:
           file: ./book-portal-fe/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/book-portal-fe:latest
-          cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/book-portal-fe:buildcache
-          cache-to: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/book-portal-fe:buildcache,mode=max
+#          cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/book-portal-fe:buildcache
+#          cache-to: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/book-portal-fe:buildcache,mode=max
 
       - name: Build and push Nginx
         uses: docker/build-push-action@v2
