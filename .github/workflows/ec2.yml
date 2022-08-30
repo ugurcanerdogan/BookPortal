@@ -22,6 +22,8 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
           # AWS EC2 Instance id or ids
           instance-ids: ${{ secrets.AWS_INSTANCE_ID }}
+          # Command execution location
+          working-directory: /home/ec2-user
           # Bash command you want to execute
           command: |
             sudo docker-compose stop
