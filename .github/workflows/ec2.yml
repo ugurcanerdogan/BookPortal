@@ -24,6 +24,7 @@ jobs:
           instance-ids: ${{ secrets.AWS_INSTANCE_ID }}
           # Bash command you want to execute
           command: |
+            echo $(date) >> logs.txt
             docker-compose stop
             docker-compose rm -f
             docker-compose up -d
