@@ -28,6 +28,7 @@ jobs:
           command: |
             sudo docker-compose stop
             sudo docker-compose rm -f
+            sudo docker-compose pull
             sudo docker-compose up -d
             sudo docker image prune -af
           # Comment for Send-Command
