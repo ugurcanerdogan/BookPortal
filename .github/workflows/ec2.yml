@@ -24,10 +24,9 @@ jobs:
           instance-ids: ${{ secrets.AWS_INSTANCE_ID }}
           # Bash command you want to execute
           command: |
-            echo $(date) >> logs.txt
-            docker-compose stop
-            docker-compose rm -f
-            docker-compose up -d
-            docker image prune -af
+            sudo docker-compose stop
+            sudo docker-compose rm -f
+            sudo docker-compose up -d
+            sudo docker image prune -af
           # Comment for Send-Command
           comment: docker-compose.yml file re-pulls newer versions of book-portal images and runs them on the instance.
