@@ -18,9 +18,7 @@ jobs:
 
     name: NodeJS Install and Build
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./book-portal-fe
+
     strategy:
       matrix:
         node-version: [17.x]
@@ -37,7 +35,10 @@ jobs:
         cache-dependency-path: './book-portal-fe/package-lock.json'
 
     - run: npm ci
+      working-directory: ./book-portal-fe
     - run: npm run build --if-present
+      working-directory: ./book-portal-fe
+
 
   docker:
 
