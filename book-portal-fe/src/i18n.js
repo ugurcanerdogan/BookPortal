@@ -105,7 +105,7 @@ i18n.use(initReactI18next).init({
         "Books": "Kitaplar",
         "Users": "Kullanıcılar",
         "Authors": "Yazarlar",
-        "Admin Panel": "Admin Paneli",
+        "Admin Panel": "Admin Panel",
         "Add Book": "Kitap Ekle",
         "Add User": "Kullanıcı Ekle",
         "Add Author": "Yazar Ekle",
