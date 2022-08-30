@@ -25,7 +25,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v2
@@ -48,7 +48,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Login to Docker Hub
         uses: docker/login-action@v1
@@ -62,7 +62,7 @@ jobs:
       - name: Build and push FE
         uses: docker/build-push-action@v2
         with:
-          context: .
+          context: ./book-portal-fe
           file: ./book-portal-fe/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/book-portal-fe:latest
@@ -70,9 +70,9 @@ jobs:
 #          cache-to: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/book-portal-fe:buildcache,mode=max
 
       - name: Build and push Nginx
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         with:
-          context: .
+          context: ./nginx
           file: ./nginx/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/book-portal-proxy:latest
